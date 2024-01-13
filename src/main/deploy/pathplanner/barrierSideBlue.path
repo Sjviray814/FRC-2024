@@ -1,0 +1,184 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 1.978294896760734,
+        "y": 4.396379732930406
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.789055834521925,
+        "y": 4.476313909892777
+      },
+      "holonomicAngle": -180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.634074276695562,
+        "y": 4.510571414305222
+      },
+      "prevControl": {
+        "x": 2.7776366663844443,
+        "y": 4.339283892242999
+      },
+      "nextControl": {
+        "x": 4.250847606902388,
+        "y": 4.633926080346587
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 7.265369744414703,
+        "y": 5.36700902461634
+      },
+      "prevControl": {
+        "x": 6.455042789290564,
+        "y": 5.82491495453787
+      },
+      "nextControl": {
+        "x": 7.646737645888296,
+        "y": 5.151502650970242
+      },
+      "holonomicAngle": -90.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.9342138684277375,
+        "y": 3.939613007431143
+      },
+      "prevControl": {
+        "x": 7.75639397432641,
+        "y": 4.042385520668478
+      },
+      "nextControl": {
+        "x": 5.699084209963286,
+        "y": 3.7852218001230855
+      },
+      "holonomicAngle": -135.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 5.129985302705649,
+        "y": 4.613343927542556
+      },
+      "prevControl": {
+        "x": 6.002273672210958,
+        "y": 4.628920505569437
+      },
+      "nextControl": {
+        "x": 4.49051188700668,
+        "y": 4.601924759405074
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 4.216451851707123,
+        "y": 4.7046972726424094
+      },
+      "prevControl": {
+        "x": 4.353481869356903,
+        "y": 4.7046972726424094
+      },
+      "nextControl": null,
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "maxVelocity": 4.0,
+  "maxAcceleration": 4.0,
+  "isReversed": null,
+  "markers": [
+    {
+      "position": 3.0,
+      "names": [
+        "GrabCone"
+      ]
+    },
+    {
+      "position": 1.8,
+      "names": [
+        "OpenGrabber"
+      ]
+    },
+    {
+      "position": 3.5,
+      "names": [
+        "OpenJaw",
+        "ExtendNeck"
+      ]
+    },
+    {
+      "position": 0.0,
+      "names": [
+        "RetractNeck"
+      ]
+    },
+    {
+      "position": 1.4181818181818149,
+      "names": [
+        "LowerJaw"
+      ]
+    }
+  ]
+}
