@@ -9,10 +9,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import com.kauailabs.navx.frc.AHRS;
-
+import com.pathplanner.lib.path.PathPlannerPath;
 // THESE ARE IMPORTANT FOR AUTOS    
-// import com.pathplanner.lib.PathPlannerTrajectory;
-// import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathfindHolonomic;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -120,26 +121,27 @@ public class Swerve extends SubsystemBase {
 
     // Assuming this method is part of a drivetrain subsystem that provides the necessary methods
     // THIS IS IMPORTANT FOR AUTOS:
-    // public Command followTrajectoryCommand(PathPlannerTrajectory traj) {
-    //     var thetaController =
-    //         new ProfiledPIDController(
-    //             8, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
-    //     thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    public Command followPathCommand(PathPlannerPath path) {
+        var thetaController =
+            new ProfiledPIDController(
+                8, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    //     PIDController pid = new PIDController(thetaController.getP(), 0, 0, thetaController.getPeriod());
-
-    //     return new PPSwerveControllerCommand(
-    //         traj, 
-    //         this::getPose, // Pose supplier
-    //         Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
-    //         new PIDController(20, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-    //         new PIDController(20, 0, 0), // Y controller (usually the same values as X controller)
-    //         pid, // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-    //         this::setModuleStates, // Module states consumer
-    //         true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-    //         this // Requires this drive subsystem
-    //     );
-    // }
+        PIDController pid = new PIDController(thetaController.getP(), 0, 0, thetaController.getPeriod());
+        
+        return AutoBuilder.followPath(path);
+        // return new PPSwerveControllerCommand(
+        //     traj, 
+        //     this::getPose, // Pose supplier
+        //     Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
+        //     new PIDController(20, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+        //     new PIDController(20, 0, 0), // Y controller (usually the same values as X controller)
+        //     pid, // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+        //     this::setModuleStates, // Module states consumer
+        //     true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+        //     this // Requires this drive subsystem
+        // );
+    }
 
     public SwerveModuleState[] getModuleStates(){
         SwerveModuleState[] states = new SwerveModuleState[4];
@@ -185,6 +187,7 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle", mod.getState().angle.getDegrees());       
             SmartDashboard.putNumber("Robot Distance Traveled", getPose().getX());
 
         }

@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
   // private Trajectory trajectory2 = new Trajectory();
 
   private RobotContainer m_robotContainer;
-  private UsbCamera camera;
+  // private UsbCamera camera;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
     
     // camera = new UsbCamera("USBCam", 1);
 
-    CameraServer.startAutomaticCapture();
+    // CameraServer.startAutomaticCapture();
 
     ctreConfigs = new CTREConfigs();
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our

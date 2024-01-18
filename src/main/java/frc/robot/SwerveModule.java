@@ -91,16 +91,17 @@ private void setAngle(SwerveModuleState desiredState){
 }
 
 private Rotation2d getAngle(){
-    if (Robot.isReal()) return Rotation2d.fromDegrees(mAngleEncoder.getPosition()*360);
+    if (Robot.isReal()) return Rotation2d.fromDegrees(mAngleEncoder.getPosition());
     return simAngleCache; // If sim.
 }
 
 public Rotation2d getAbsoluteAngle(){
-    return Rotation2d.fromDegrees(absoluteEncoder.getAbsolutePosition().getValue());
+    return Rotation2d.fromDegrees(absoluteEncoder.getAbsolutePosition().getValue()*360);
 }
 
 public void resetToAbsolute(){
     mAngleEncoder.setPosition(getAbsoluteAngle().getDegrees() - angleOffset.getDegrees());
+    // mAngleEncoder.setPosition(0);
 }
 
 private void configAngleEncoder(){        
@@ -157,17 +158,17 @@ public SwerveModuleState getState(){
 }
 
 public Rotation2d getCanCoder(){
-    return Rotation2d.fromDegrees(absoluteEncoder.getAbsolutePosition().getValue());
+    return Rotation2d.fromDegrees(absoluteEncoder.getAbsolutePosition().getValue()*360);
 }
 
 
 public SwerveModulePosition getPosition(){
     for(int i = 0; i < 4; i++){
-        SmartDashboard.putNumber("Position of Encoder" + moduleNumber, Conversions.neoToMeters(mDriveEncoder.getPosition(), Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio, moduleNumber));
+        SmartDashboard.putNumber("Position of Encoder" + moduleNumber, Conversions.neoToMeters(mDriveEncoder.getPosition()*360, Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio, moduleNumber));
     }
 
     return new SwerveModulePosition(
-        Conversions.neoToMeters(mDriveEncoder.getPosition(), Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio, moduleNumber), 
+        Conversions.neoToMeters(mDriveEncoder.getPosition()*360, Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio, moduleNumber), 
         getAngle()
     );
 }
