@@ -12,6 +12,9 @@ import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.path.PathPlannerPath;
 // THESE ARE IMPORTANT FOR AUTOS    
 import com.pathplanner.lib.path.PathPlannerTrajectory;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathfindHolonomic;
 
@@ -21,6 +24,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -115,33 +119,35 @@ public class Swerve extends SubsystemBase {
         swerveOdometry.resetPosition(getYaw(), getModulePositions(), new Pose2d());
     }
 
+
     public void setOdometry(Pose2d pose) {
         swerveOdometry.resetPosition(getYaw(), getModulePositions(), pose);
     }
 
+  
     // Assuming this method is part of a drivetrain subsystem that provides the necessary methods
     // THIS IS IMPORTANT FOR AUTOS:
-    public Command followPathCommand(PathPlannerPath path) {
-        var thetaController =
-            new ProfiledPIDController(
-                8, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
-        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    // public Command followPathCommand(PathPlannerPath path) {
+    //     var thetaController =
+    //         new ProfiledPIDController(
+    //             8, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
+    //     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-        PIDController pid = new PIDController(thetaController.getP(), 0, 0, thetaController.getPeriod());
+    //     PIDController pid = new PIDController(thetaController.getP(), 0, 0, thetaController.getPeriod());
         
-        return AutoBuilder.followPath(path);
-        // return new PPSwerveControllerCommand(
-        //     traj, 
-        //     this::getPose, // Pose supplier
-        //     Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
-        //     new PIDController(20, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-        //     new PIDController(20, 0, 0), // Y controller (usually the same values as X controller)
-        //     pid, // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-        //     this::setModuleStates, // Module states consumer
-        //     true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-        //     this // Requires this drive subsystem
-        // );
-    }
+    //     return AutoBuilder.followPath(path);
+    //     // return new PPSwerveControllerCommand(
+    //     //     traj, 
+    //     //     this::getPose, // Pose supplier
+    //     //     Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
+    //     //     new PIDController(20, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+    //     //     new PIDController(20, 0, 0), // Y controller (usually the same values as X controller)
+    //     //     pid, // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+    //     //     this::setModuleStates, // Module states consumer
+    //     //     true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+    //     //     this // Requires this drive subsystem
+    //     // );
+    // }
 
     public SwerveModuleState[] getModuleStates(){
         SwerveModuleState[] states = new SwerveModuleState[4];

@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.autos.DriveForward;
+import frc.robot.autos.testAuto;
 import frc.robot.commands.autocommands.AutoDrive;
 import frc.robot.commands.autocommands.AutoTurn;
 import frc.robot.commands.autocommands.BalanceRobot;
@@ -159,7 +159,7 @@ public class RobotContainer {
         double initRoll = swerve.getRoll();
 
         chooser.setDefaultOption("Nothing", null);
-        chooser.addOption("Drive Backwards", new DriveForward(swerve));
+        chooser.addOption("Test Auto", new testAuto(swerve));
 
         SmartDashboard.putData(chooser);
     }
