@@ -30,6 +30,7 @@ import frc.robot.autos.testAuto;
 import frc.robot.commands.autocommands.AutoDrive;
 import frc.robot.commands.autocommands.AutoTurn;
 import frc.robot.commands.autocommands.BalanceRobot;
+import frc.robot.commands.autocommands.LimelightAlign;
 import frc.robot.commands.defaultcommands.DefaultSwerve;
 import frc.robot.subsystems.*;
 import frc.robot.util.Limelight;
@@ -75,6 +76,7 @@ public class RobotContainer {
     private final JoystickButton zeroOdometry = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kX.value);
+    private final JoystickButton align = new JoystickButton(driver, XboxController.Button.kB.value);
     // private final JoystickButton changePressure = new JoystickButton(operator, XboxController.Button.kX.value);
 
 
@@ -135,6 +137,7 @@ public class RobotContainer {
         zeroOdometry.onTrue(new InstantCommand(() -> swerve.resetOdometry()));
         zeroGyro.onTrue(new InstantCommand(() -> swerve.zeroGyro()));
         robotCentric.toggleOnTrue(new InstantCommand(() -> toggleRobotCentric()));
+        align.onTrue(new LimelightAlign(swerve));
         // alignToScore.whileTrue(new LimelightAlign(jaw, neck, swerve, PoleHeight.HIGH_POLE));
 
     }
