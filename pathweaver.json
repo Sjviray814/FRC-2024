@@ -5,5 +5,5 @@
   "maxAcceleration": 3.0,
   "trackWidth": 0.5715,
   "gameName": "Crescendo",
-  "outputDir": "src/main/java/frc/robot/autos/pathweaver"
+  "outputDir": "src/main/deploy/pathweaver"
 }

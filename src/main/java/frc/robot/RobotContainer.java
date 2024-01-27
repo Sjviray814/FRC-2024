@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.autos.pathweaverTest;
 import frc.robot.autos.testAuto;
 import frc.robot.commands.autocommands.AutoDrive;
 import frc.robot.commands.autocommands.AutoTurn;
@@ -137,7 +138,7 @@ public class RobotContainer {
         zeroOdometry.onTrue(new InstantCommand(() -> swerve.resetOdometry()));
         zeroGyro.onTrue(new InstantCommand(() -> swerve.zeroGyro()));
         robotCentric.toggleOnTrue(new InstantCommand(() -> toggleRobotCentric()));
-        align.onTrue(new LimelightAlign(swerve));
+        align.whileTrue(new LimelightAlign(swerve));
         // alignToScore.whileTrue(new LimelightAlign(jaw, neck, swerve, PoleHeight.HIGH_POLE));
 
     }
@@ -163,6 +164,7 @@ public class RobotContainer {
 
         chooser.setDefaultOption("Nothing", null);
         chooser.addOption("Test Auto", new testAuto(swerve));
+        chooser.addOption("Pathweaver Test", new pathweaverTest(swerve));
 
         SmartDashboard.putData(chooser);
     }
