@@ -2,6 +2,7 @@ package frc.robot.commands.autocommands;
 
 import java.lang.invoke.ConstantCallSite;
 
+import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -15,13 +16,13 @@ import frc.robot.util.Limelight;
 import frc.robot.util.Limelight.LightMode;
 
 
-public class LimelightAlign extends Command{
+public class StrafeAlign extends Command{
   private Swerve swerve;
   private Timer timer;
   private double angleToPole, distanceToBase, lengthToPole, distanceFromTarget, strafeOffset, rotation, savedRotation;
 
   
-  public LimelightAlign(Swerve swerve) {
+  public StrafeAlign(Swerve swerve) {
     timer = new Timer();
     this.swerve = swerve;
     
@@ -34,6 +35,7 @@ public class LimelightAlign extends Command{
   public void initialize() {
     timer.reset();
     timer.start();
+    Limelight.setPipeline(1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -79,15 +81,16 @@ public class LimelightAlign extends Command{
 
       double maxSpeed = Math.abs(savedRotation)/35.0 + 0.02;
       if(maxSpeed > 0.7) maxSpeed = 0.7;
+      int translation = savedRotation < 0 ? -1 : 1;
 
         if(Math.abs(savedRotation) >= 12){
-            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.5);
+            swerve.driveSlow(new Translation2d(0, translation), 0, false, true, 1);
         }
         else if(Math.abs(savedRotation) > 2){
-            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.1);
+            swerve.driveSlow(new Translation2d(0, translation), 0, false, true, 0.4);
         }
         else{
-            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.05);
+            swerve.driveSlow(new Translation2d(0, translation), 0, false, true, 0.1);
         }
         // swerve.driveSlow(new Translation2d(0,0), savedRotation, true, true, maxSpeed);
   
@@ -106,6 +109,7 @@ public class LimelightAlign extends Command{
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    Limelight.setPipeline(0);
     if((Limelight.getTx() != 0 && Math.abs(Limelight.getTx()) < 0.1) || timer.hasElapsed(3)){
       return true;
     } else {

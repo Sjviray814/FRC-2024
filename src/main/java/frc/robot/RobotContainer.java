@@ -32,6 +32,7 @@ import frc.robot.commands.autocommands.AutoDrive;
 import frc.robot.commands.autocommands.AutoTurn;
 import frc.robot.commands.autocommands.BalanceRobot;
 import frc.robot.commands.autocommands.LimelightAlign;
+import frc.robot.commands.autocommands.StrafeAlign;
 import frc.robot.commands.defaultcommands.DefaultSwerve;
 import frc.robot.subsystems.*;
 import frc.robot.util.Limelight;
@@ -64,6 +65,8 @@ public class RobotContainer {
     private int leftTriggerAxis = XboxController.Axis.kLeftTrigger.value;
     private int rightTriggerAxis = XboxController.Axis.kRightTrigger.value;
 
+    private double savedLimelightX;
+
 
     
 
@@ -74,10 +77,11 @@ public class RobotContainer {
     private boolean lick = false, grabThang = true, lowPressure = true;
 
     /* Driver Buttons */
-    private final JoystickButton zeroOdometry = new JoystickButton(driver, XboxController.Button.kA.value);
+    private final JoystickButton flipAxes = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kX.value);
     private final JoystickButton align = new JoystickButton(driver, XboxController.Button.kB.value);
+    private final JoystickButton strafeAlign = new JoystickButton(driver, XboxController.Button.kStart.value);
     // private final JoystickButton changePressure = new JoystickButton(operator, XboxController.Button.kX.value);
 
 
@@ -100,15 +104,28 @@ public class RobotContainer {
         if(rotationAxis < Math.abs(0.1)){
             rotationAxis = 0;
         }    
+
                 
 
         swerve.setDefaultCommand(
             new DefaultSwerve(
                 swerve, 
-                () -> driver.getRawAxis(translationAxis), 
-                () -> driver.getRawAxis(strafeAxis), 
+                () -> -driver.getRawAxis(translationAxis), 
+                () -> -driver.getRawAxis(strafeAxis), 
                 () -> -driver.getRawAxis(rotationAxis), 
-                () -> isFieldOriented
+                () -> isFieldOriented,
+                false
+                )
+        );
+
+        flipAxes.whileTrue(
+            new DefaultSwerve(
+                swerve, 
+                () -> -driver.getRawAxis(translationAxis), 
+                () -> -driver.getRawAxis(strafeAxis), 
+                () -> getLimelightRotation(), 
+                () -> isFieldOriented,
+                true
                 )
         );
 
@@ -135,10 +152,10 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroOdometry.onTrue(new InstantCommand(() -> swerve.resetOdometry()));
-        zeroGyro.onTrue(new InstantCommand(() -> swerve.zeroGyro()));
+        zeroGyro.onTrue(new InstantCommand(() -> swerve.resetEverything()));
         robotCentric.toggleOnTrue(new InstantCommand(() -> toggleRobotCentric()));
         align.whileTrue(new LimelightAlign(swerve));
+        strafeAlign.whileTrue(new StrafeAlign(swerve));
         // alignToScore.whileTrue(new LimelightAlign(jaw, neck, swerve, PoleHeight.HIGH_POLE));
 
     }
@@ -157,6 +174,26 @@ public class RobotContainer {
 
     public void togglePressure(){
         lowPressure = !lowPressure;
+    }
+
+    public double getLimelightRotation(){
+        // return Limelight.getTx()/-100; // -30 to 30 needs to become .6 to -.6
+
+        // if(Math.abs(Limelight.getTx()) >= 12){
+        //     return -Limelight.getTx()/75;
+        // }
+            
+
+        if(Limelight.getTx() != 0){
+            savedLimelightX = Limelight.getTx();
+        }
+        if(Math.abs(savedLimelightX) > .5){
+            return -(savedLimelightX/150 - 0.26*driver.getRawAxis(strafeAxis));
+        }
+        else if ((Limelight.getTx() != 0 && Math.abs(Limelight.getTx()) < 0.1)){
+            return 0;
+        }
+        return -(savedLimelightX/150 - 0.26*driver.getRawAxis(strafeAxis));
     }
 
     public void initializeAutoChooser() {

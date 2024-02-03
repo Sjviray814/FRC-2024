@@ -187,6 +187,11 @@ public class Swerve extends SubsystemBase {
         return positions;
     }
 
+    public void resetEverything(){
+        zeroGyro();
+        resetOdometry();
+    }
+
 
     public void zeroGyro(){
         gyro.zeroYaw();
