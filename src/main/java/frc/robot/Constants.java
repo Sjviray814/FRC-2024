@@ -174,11 +174,11 @@ public final class Constants {
         public static final int brakeID1 = 6;
         public static final int brakeID2 = 7;
 
-        public static final int boopID1 = 3;
-        public static final int boopID2 = 2;
+        public static final int boopID1 = 0;
+        public static final int boopID2 = 1;
 
-        public static final int grabberID1 = 0;
-        public static final int grabberID2 = 1;
+        // public static final int grabberID1 = 0;
+        // public static final int grabberID2 = 1;
 
         public static final int changePressureID1 = 5;
         public static final int changePressureID2 = 4;

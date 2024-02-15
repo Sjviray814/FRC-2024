@@ -84,9 +84,12 @@ public class RobotContainer {
     private final JoystickButton strafeAlign = new JoystickButton(driver, XboxController.Button.kStart.value);
     // private final JoystickButton changePressure = new JoystickButton(operator, XboxController.Button.kX.value);
 
+    private final JoystickButton push = new JoystickButton(operator, XboxController.Button.kB.value);
+
 
     /* Subsystems */
     private final Swerve swerve = new Swerve();
+    private final Pusher pusher = new Pusher();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -158,6 +161,7 @@ public class RobotContainer {
         strafeAlign.whileTrue(new StrafeAlign(swerve));
         // alignToScore.whileTrue(new LimelightAlign(jaw, neck, swerve, PoleHeight.HIGH_POLE));
 
+        push.onTrue(new InstantCommand(() -> pusher.push()));
     }
 
     public void toggleRobotCentric(){
