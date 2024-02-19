@@ -143,91 +143,29 @@ public final class Constants {
         }
     }
 
-    public static final class Snake {
+    public static final class Shooter{
+        // IDs for the 5 shooter motors
+        public static final int frontRightMotorID = 0;
+        public static final int frontLeftMotorID = 0;
+        public static final int backRightMotorID = 0;
+        public static final int backLeftMotorID = 0;
+        public static final int articulatorID = 0;
+    }
 
-        /* Snake Neutral Modes */
-        public static final IdleMode rightNeckNeutralMode = IdleMode.kBrake;
-        public static final IdleMode leftNeckNeutralMode = IdleMode.kBrake;
-        public static final IdleMode jawNeutralMode = IdleMode.kBrake;
+    public static final class Intake{
+        // IDs for the intake motors
+        public static final int frontIntakeID = 0;
+        public static final int backIntakeID = 0;
+        public static final int articulateIntakeID = 0;
 
-        /* Snake Neck Motor Constants */
-        public static final int rightNeckMotorID = 9;
-        public static final int leftNeckMotorID = 10;
-        public static final int jawMotorID = 11;
+        // Gear ratio for the articulator
+        public static final double articulateIntakeRatio = 0.0;
 
-        /* Snake Encoder DIO Ports */
-        public static final int rightNeckEncoderID1 = 0;
-        public static final int rightNeckEncoderID2 = 1;
-        public static final int leftNeckEncoderID1 = 2;
-        public static final int leftNeckEncoderID2 = 3;
-        public static final int jawEncoderID1 = 4;
-        public static final int jawEncoderID2 = 5;
-        public static final int limitSwitchID = 6;
-
-        /* Snake Jaw Angle Gear Ratio */
-        public static final double jawGearRatio = (100.0 / 1.0);
-
-        /* Snake Neck Gear Ratio */
-        public static final double neckGearRatio = (10.62 / 1.0);
-
-        /* Pneumatics Constants */
-        public static final int brakeID1 = 6;
-        public static final int brakeID2 = 7;
-
-        public static final int boopID1 = 0;
-        public static final int boopID2 = 1;
-
-        // public static final int grabberID1 = 0;
-        // public static final int grabberID2 = 1;
-
-        public static final int changePressureID1 = 5;
-        public static final int changePressureID2 = 4;
-
-        /* Jaw and Neck Distance and Angle Constants */
-        public static final double downAngle = 0.0;
-        public static final double autoAngle = 30.0;
-        public static final double midAngle = 45.0;
-        public static final double highConeAngle = 48.0;
-        public static final double highBlockAngle = 45.0;
-        public static final double midLength = 1.25;
-        public static final double highLength = 1.6;
-        public static final double retractedLength = 0.0001;
-
-        /* Limelight Constants */
-        public static final double limelightAngle = 30.0;
-        public static final double limelightHeight = 0.338;
-        public static final double midPoleTapeHeight = 0.622;
-        public static final double midPoleHeight = 0.87;
-        public static final double highPoleHeight = 1.17;
-        public static final double lengthToMidPole = 0.55;
-        public static final double lengthToHighPole = 1.4;
-
-        /* Jaw PID Constants */
-        public static final double jawPP = 0.025;
-        public static final double jawPI = 0.001;
-        public static final double jawPD = 0.001;
-        public static final double jawPF = 0.0;
-        public static final int jawPSlot = 0;
-
-        public static final double jawVP = 0.0;
-        public static final double jawVI = 0.0;
-        public static final double jawVD = 0.0;
-        public static final double jawVF = 0.0;
-        public static final int jawVSlot = 1;
-
-        /* Neck PID Constants */
-        public static final double neckPP = 3.596;
-        public static final double neckPI = 0.0;
-        public static final double neckPD = 0.0;
-        public static final double neckPF = 0.0;
-        public static final int neckPSlot = 0;
-
-        public static final double neckVP = 0.0;
-        public static final double neckVI = 0.0;
-        public static final double neckVD = 0.0;
-        public static final double neckVF = 0.0;
-        public static final int neckVSlot = 1;
-
+        // Articulator PID:
+        public static final double articulatePP = 0.025;
+        public static final double articulatePI = 0.001;
+        public static final double articulatePD = 0.001;
+        public static final double articulatePF = 0.0;
     }
 
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot

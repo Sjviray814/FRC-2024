@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.pathweaverTest;
 import frc.robot.autos.testAuto;
+import frc.robot.commands.autocommands.AlignToRing;
 import frc.robot.commands.autocommands.AutoDrive;
 import frc.robot.commands.autocommands.AutoTurn;
 import frc.robot.commands.autocommands.BalanceRobot;
@@ -89,7 +90,6 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Swerve swerve = new Swerve();
-    private final Pusher pusher = new Pusher();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -116,8 +116,7 @@ public class RobotContainer {
                 () -> -driver.getRawAxis(translationAxis), 
                 () -> -driver.getRawAxis(strafeAxis), 
                 () -> -driver.getRawAxis(rotationAxis), 
-                () -> isFieldOriented,
-                false
+                () -> isFieldOriented
                 )
         );
 
@@ -127,8 +126,7 @@ public class RobotContainer {
                 () -> -driver.getRawAxis(translationAxis), 
                 () -> -driver.getRawAxis(strafeAxis), 
                 () -> getLimelightRotation(), 
-                () -> isFieldOriented,
-                true
+                () -> isFieldOriented
                 )
         );
 
@@ -158,10 +156,9 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> swerve.resetEverything()));
         robotCentric.toggleOnTrue(new InstantCommand(() -> toggleRobotCentric()));
         align.whileTrue(new LimelightAlign(swerve));
-        strafeAlign.whileTrue(new StrafeAlign(swerve));
+        strafeAlign.whileTrue(new AlignToRing(swerve));
         // alignToScore.whileTrue(new LimelightAlign(jaw, neck, swerve, PoleHeight.HIGH_POLE));
 
-        push.onTrue(new InstantCommand(() -> pusher.push()));
     }
 
     public void toggleRobotCentric(){

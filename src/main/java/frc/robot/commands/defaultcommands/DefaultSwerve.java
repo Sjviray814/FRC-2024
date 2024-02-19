@@ -20,7 +20,7 @@ public class DefaultSwerve extends Command {
     private BooleanSupplier robotCentricSup;
     private boolean limelight;
 
-    public DefaultSwerve(Swerve s_Swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier robotCentricSup, boolean limelight) {
+    public DefaultSwerve(Swerve s_Swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier robotCentricSup) {
         this.s_Swerve = s_Swerve;
         addRequirements(s_Swerve);
 
@@ -28,7 +28,6 @@ public class DefaultSwerve extends Command {
         this.strafeSup = strafeSup;
         this.rotationSup = rotationSup;
         this.robotCentricSup = robotCentricSup;
-        this.limelight = limelight;
     }
 
     @Override
