@@ -159,7 +159,7 @@ public final class Constants {
         public static final int articulateIntakeID = 0;
 
         // Gear ratio for the articulator
-        public static final double articulateIntakeRatio = 0.0;
+        public static final double articulateIntakeRatio = 4.0/1.0;
 
         // Articulator PID:
         public static final double articulatePP = 0.025;

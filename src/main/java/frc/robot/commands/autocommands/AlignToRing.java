@@ -11,23 +11,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
-import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonTrackedTarget;
-
+import frc.robot.util.Limelight;
+import frc.robot.util.Limelight.LightMode;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 
 public class AlignToRing extends Command{
   private Swerve swerve;
   private Timer timer;
-  private double rotation, savedRotation;
-  
-  private PhotonCamera camera = new PhotonCamera("camera1");
+  private double rotation, savedRotation, tx;
 
   
   public AlignToRing(Swerve swerve) {
     timer = new Timer();
     this.swerve = swerve;
-    this.rotation = 0;
     
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(swerve);
@@ -43,37 +42,59 @@ public class AlignToRing extends Command{
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // rotation = -Limelight.getTx(); 
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-rings");
+    tx = table.getEntry("tx").getDouble(0.0);
+    SmartDashboard.putNumber("Limelight X", tx);
+    rotation = -tx; 
 
-    var result = camera.getLatestResult();
+    // angleToPole = 0;
+    // distanceToBase = 0;
+    // lengthToPole = 0;
+    // angleToPole = Math.toRadians(Constants.Snake.limelightAngle + Limelight.getTy());
+    // distanceToBase = (Constants.Snake.midPoleHeight - Constants.Snake.limelightHeight) / Math.tan(Constants.Snake.limelightAngle);
+    // lengthToPole = Constants.Snake.lengthToMidPole;
 
-    if(!result.hasTargets()){
-      rotation = 0;
-    }
-    else{
-      PhotonTrackedTarget target = result.getBestTarget();
-      rotation = target.getYaw();
-    }
-    SmartDashboard.putNumber("Ring Angle Rotation", rotation);
     
+
+
+    //Calculates distance robot has to drive forward to be on the edge of the scoring station
+    // distanceFromTarget = distanceToBase - lengthToPole;
+
+    //calculates how far left or right we have to strafe to align with the pole we are scoring on. 
+    // strafeOffset = distanceToBase * Math.tan(Math.toRadians(-Limelight.getTx()));
+
+
+    // SmartDashboard.putNumber("distanceFromTarget", distanceFromTarget);
+    // SmartDashboard.putNumber("strafeOffset", strafeOffset);
+    SmartDashboard.putNumber("Rotation Offset", rotation);
+
+    // PathPlannerTrajectory AlignToScore = PathPlanner.generatePath(
+    //   new PathConstraints(4.0, 4.0),
+    //   new PathPoint(swerve.get, Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)), // position, heading(direction of travel), holonomic rotation
+    //   new PathPoint(new Translation2d(distanceFromTarget, strafeOffset), Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)) // position, heading(direction of travel), holonomic rotation
+    //   );
+
+    // swerve.followTrajectoryCommand(AlignToScore);
+    
+    //   swerve.driveStraight(new Translation2d(distanceFromTarget, strafeOffset).times(2.0), 0, true, true);
+    // swerve.drive(new Translation2d(0, 0), (Rotation2d.fromRadians(rotation)).getRadians(), true, true);
       if(rotation != 0){
         savedRotation = rotation;
       }
 
-      // double maxSpeed = Math.abs(savedRotation)/35.0 + 0.02;
-      // if(maxSpeed > 0.7) maxSpeed = 0.7;
+      double maxSpeed = Math.abs(savedRotation)/35.0 + 0.02;
+      if(maxSpeed > 0.7) maxSpeed = 0.7;
 
-      //   if(Math.abs(savedRotation) >= 12){
-      //       swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.5);
-      //   }
-      //   else if(Math.abs(savedRotation) > 2){
-      //       swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.1);
-      //   }
-      //   else{
-      //       swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.05);
-      //   }
+        if(Math.abs(savedRotation) >= 12){
+            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.5);
+        }
+        else if(Math.abs(savedRotation) > 2){
+            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.1);
+        }
+        else{
+            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.05);
+        }
         // swerve.driveSlow(new Translation2d(0,0), savedRotation, true, true, maxSpeed);
-        
   
 
   }
@@ -90,7 +111,7 @@ public class AlignToRing extends Command{
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((rotation != 0 && Math.abs(rotation) < 0.1) || timer.hasElapsed(3)){
+    if((tx != 0 && Math.abs(tx) < 0.1) || timer.hasElapsed(3)){
       return true;
     } else {
       return false;
