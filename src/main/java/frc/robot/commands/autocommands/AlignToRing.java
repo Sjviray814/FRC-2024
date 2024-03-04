@@ -52,7 +52,7 @@ public class AlignToRing extends Command{
     }
     else{
       PhotonTrackedTarget target = result.getBestTarget();
-      rotation = target.getYaw();
+      rotation = -target.getYaw();
     }
     SmartDashboard.putNumber("Ring Angle Rotation", rotation);
 
@@ -60,19 +60,19 @@ public class AlignToRing extends Command{
         savedRotation = rotation;
       }
 
-      // double maxSpeed = Math.abs(savedRotation)/35.0 + 0.02;
-      // if(maxSpeed > 0.7) maxSpeed = 0.7;
+      double maxSpeed = Math.abs(savedRotation)/35.0 + 0.02;
+      if(maxSpeed > 0.7) maxSpeed = 0.7;
 
-      //   if(Math.abs(savedRotation) >= 12){
-      //       swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.5);
-      //   }
-      //   else if(Math.abs(savedRotation) > 2){
-      //       swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.1);
-      //   }
-      //   else{
-      //       swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.05);
-      //   }
-        // swerve.driveSlow(new Translation2d(0,0), savedRotation, true, true, maxSpeed);
+        if(Math.abs(savedRotation) >= 12){
+            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.5);
+        }
+        else if(Math.abs(savedRotation) > 2){
+            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.1);
+        }
+        else{
+            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.05);
+        }
+        swerve.driveSlow(new Translation2d(0,0), savedRotation, true, true, maxSpeed);
 
 
 

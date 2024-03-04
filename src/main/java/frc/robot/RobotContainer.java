@@ -4,6 +4,9 @@ import java.util.function.BooleanSupplier;
 
 import javax.xml.crypto.dsig.spec.HMACParameterSpec;
 
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -68,6 +71,9 @@ public class RobotContainer {
 
     private double savedLimelightX;
 
+    private PhotonCamera camera = new PhotonCamera("camera1");
+    private double rotation, savedCameraX;
+
 
     
 
@@ -116,7 +122,7 @@ public class RobotContainer {
                 () -> -driver.getRawAxis(translationAxis), 
                 () -> -driver.getRawAxis(strafeAxis), 
                 () -> -driver.getRawAxis(rotationAxis), 
-                () -> isFieldOriented
+                () -> false
                 )
         );
 
@@ -124,9 +130,9 @@ public class RobotContainer {
             new DefaultSwerve(
                 swerve, 
                 () -> -driver.getRawAxis(translationAxis), 
-                () -> -driver.getRawAxis(strafeAxis), 
-                () -> getLimelightRotation(), 
-                () -> isFieldOriented
+                () -> 0.0,//-driver.getRawAxis(strafeAxis), 
+                () -> getCameraRotation(), 
+                () -> true
                 )
         );
 
@@ -175,6 +181,30 @@ public class RobotContainer {
 
     public void togglePressure(){
         lowPressure = !lowPressure;
+    }
+
+
+    // FOV is 30
+    // Max rotation we want is .5
+    public double getCameraRotation(){
+        var result = camera.getLatestResult();
+
+        if(!result.hasTargets()){
+            rotation = 0;
+          }
+          else{
+            PhotonTrackedTarget target = result.getBestTarget();
+            rotation = target.getYaw();
+          }
+
+          if(rotation != 0){
+            savedCameraX = rotation;
+          }
+        else if ((rotation != 0 && Math.abs(rotation) < 0.1)){
+            return 0;
+        }
+        return -(savedCameraX/60);
+          
     }
 
     public double getLimelightRotation(){
