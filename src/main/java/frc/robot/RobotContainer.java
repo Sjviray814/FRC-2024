@@ -91,11 +91,20 @@ public class RobotContainer {
     private final JoystickButton strafeAlign = new JoystickButton(driver, XboxController.Button.kStart.value);
     // private final JoystickButton changePressure = new JoystickButton(operator, XboxController.Button.kX.value);
 
-    private final JoystickButton push = new JoystickButton(operator, XboxController.Button.kB.value);
+    private final JoystickButton shooterOn = new JoystickButton(operator, XboxController.Button.kB.value);
+    private final JoystickButton shooterUp = new JoystickButton(operator, XboxController.Button.kA.value);
+    private final JoystickButton shooterDown = new JoystickButton(operator, XboxController.Button.kX.value);
+    private final JoystickButton shooterFeed = new JoystickButton(operator, XboxController.Button.kY.value);
+    private final JoystickButton intakeUp = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton intakeDown = new JoystickButton(operator , XboxController.Button.kRightBumper.value);
+    private final JoystickButton intakeOn = new JoystickButton(operator, XboxController.Button.kStart.value);
+
 
 
     /* Subsystems */
     private final Swerve swerve = new Swerve();
+    private final Shooter shooter = new Shooter();
+    private final Intake intake = new Intake();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -135,8 +144,7 @@ public class RobotContainer {
                 () -> true
                 )
         );
-
-       
+     
     
         //Initalize Autonomous Chooser
         chooser = new SendableChooser<Command>();
@@ -164,6 +172,17 @@ public class RobotContainer {
         align.whileTrue(new LimelightAlign(swerve));
         strafeAlign.whileTrue(new AlignToRing(swerve));
         // alignToScore.whileTrue(new LimelightAlign(jaw, neck, swerve, PoleHeight.HIGH_POLE));
+
+        shooterOn.whileTrue(new InstantCommand(() -> shooter.shooterOn()));
+        shooterUp.whileTrue(new InstantCommand(() -> shooter.articulateUp()));
+        shooterDown.whileTrue(new InstantCommand(() -> shooter.articulateDown()));
+        shooterFeed.whileTrue(new InstantCommand(() -> shooter.feed()));
+
+        intakeUp.whileTrue(new InstantCommand(() -> intake.intakeUp()));
+        intakeDown.whileTrue(new InstantCommand(() -> intake.intakeDown()));
+        intakeOn.whileTrue(new InstantCommand(() -> intake.intakeOn()));
+
+
 
     }
 

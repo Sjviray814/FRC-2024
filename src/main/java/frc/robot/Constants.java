@@ -149,7 +149,11 @@ public final class Constants {
         public static final int frontLeftMotorID = 0;
         public static final int backRightMotorID = 0;
         public static final int backLeftMotorID = 0;
-        public static final int articulatorID = 0;
+
+        public static final int leftArticulatorID = 0;
+        public static final int rightArticulatorID = 0;
+
+        public static final int feedID = 0;
     }
 
     public static final class Intake{

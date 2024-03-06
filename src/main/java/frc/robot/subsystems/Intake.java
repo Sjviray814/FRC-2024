@@ -58,11 +58,11 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakeUp(){
-    intakeArticulatorMotor.set(1);
+    intakeArticulatorMotor.set(.1);
   }
   
   public void intakeDown(){
-    intakeArticulatorMotor.set(-1);
+    intakeArticulatorMotor.set(-.1);
     
   }
 

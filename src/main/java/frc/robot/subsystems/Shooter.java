@@ -13,8 +13,8 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
 
-  private CANSparkMax frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor, articulatorMotor;
-  private IdleMode shooterIdleMode, articulatorIdleMode;
+  private CANSparkMax frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor, leftArticulatorMotor, rightArticulatorMotor, feedMotor;
+  private IdleMode shooterIdleMode, articulatorIdleMode, feedIdleMode;
 
 
   /** Creates a new Shooter. */
@@ -24,10 +24,14 @@ public class Shooter extends SubsystemBase {
     frontRightMotor = new CANSparkMax(Constants.Shooter.frontRightMotorID, MotorType.kBrushless);
     backLeftMotor = new CANSparkMax(Constants.Shooter.backLeftMotorID, MotorType.kBrushless);
     backRightMotor = new CANSparkMax(Constants.Shooter.backRightMotorID, MotorType.kBrushless);
+    leftArticulatorMotor = new CANSparkMax(Constants.Shooter.leftArticulatorID, MotorType.kBrushless);
+    rightArticulatorMotor = new CANSparkMax(Constants.Shooter.rightArticulatorID, MotorType.kBrushless);
+    feedMotor = new CANSparkMax(Constants.Shooter.feedID, MotorType.kBrushless);
 
     // Configure Idle Modes:
     shooterIdleMode = IdleMode.kCoast;
     articulatorIdleMode = IdleMode.kBrake;
+    feedIdleMode = IdleMode.kCoast;
 
   }
 
@@ -37,18 +41,27 @@ public class Shooter extends SubsystemBase {
     frontLeftMotor.restoreFactoryDefaults();
     backRightMotor.restoreFactoryDefaults();
     backLeftMotor.restoreFactoryDefaults();
-    articulatorMotor.restoreFactoryDefaults();
+
+    leftArticulatorMotor.restoreFactoryDefaults();
+    rightArticulatorMotor.restoreFactoryDefaults();
+
+    feedMotor.restoreFactoryDefaults();
 
     // Set Inverted:
     frontLeftMotor.setInverted(true);
     backLeftMotor.setInverted(true);
+    leftArticulatorMotor.setInverted(true);
 
     // Set Idle Modes:
     frontRightMotor.setIdleMode(shooterIdleMode);
     frontLeftMotor.setIdleMode(shooterIdleMode);
     backRightMotor.setIdleMode(shooterIdleMode);
     backLeftMotor.setIdleMode(shooterIdleMode);
-    articulatorMotor.setIdleMode(articulatorIdleMode);
+
+    leftArticulatorMotor.setIdleMode(articulatorIdleMode);
+    rightArticulatorMotor.setIdleMode(articulatorIdleMode);
+
+    feedMotor.setIdleMode(feedIdleMode);
   }
 
   public void shooterOn(){
@@ -63,6 +76,25 @@ public class Shooter extends SubsystemBase {
     frontLeftMotor.set(0);
     backRightMotor.set(0);
     backRightMotor.set(0);
+  }
+
+  public void articulateUp(){
+    rightArticulatorMotor.set(.1);
+    leftArticulatorMotor.set(.1);
+  }
+
+  public void articulateDown(){
+    rightArticulatorMotor.set(-.1);
+    leftArticulatorMotor.set(-.1);
+  }
+
+  public void articulateOff(){
+    rightArticulatorMotor.set(0);
+    leftArticulatorMotor.set(0);
+  }
+
+  public void feed(){
+    feedMotor.set(1);
   }
 
   @Override
