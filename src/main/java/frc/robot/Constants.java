@@ -96,8 +96,8 @@ public final class Constants {
 
         /* Front Left Module - Module 0 */
         public static final class Mod0 { //TODO: This must be tuned to specific robot
-            public static final int driveMotorID = 2;
-            public static final int angleMotorID = 1;
+            public static final int driveMotorID = 1;
+            public static final int angleMotorID = 2;
             // public static final int driveMotorID = 8;
             // public static final int angleMotorID = 7;
             public static final int canCoderID = 0;
@@ -108,8 +108,8 @@ public final class Constants {
 
         /* Front Right Module - Module 1 */
         public static final class Mod1 { //TODO: This must be tuned to specific robot
-            public static final int driveMotorID = 8;
-            public static final int angleMotorID = 7;
+            public static final int driveMotorID = 5;
+            public static final int angleMotorID = 6;
             // public static final int driveMotorID = 4;
             // public static final int angleMotorID = 3;
             public static final int canCoderID = 3;
@@ -122,8 +122,8 @@ public final class Constants {
         public static final class Mod2 { //TODO: This must be tuned to specific robot
             // public static final int driveMotorID = 5;
             // public static final int angleMotorID = 6;
-            public static final int driveMotorID = 4;
-            public static final int angleMotorID = 3;
+            public static final int driveMotorID = 3;
+            public static final int angleMotorID = 4;
             public static final int canCoderID = 1;
             public static final Rotation2d angleOffset = Rotation2d.fromDegrees(69.84);
             public static final SwerveModuleConstants constants = 
@@ -134,8 +134,8 @@ public final class Constants {
         public static final class Mod3 { //TODO: This must be tuned to specific robot
             // public static final int driveMotorID = 2;
             // public static final int angleMotorID = 1;
-            public static final int driveMotorID = 6;
-            public static final int angleMotorID = 5;
+            public static final int driveMotorID = 7;
+            public static final int angleMotorID = 8;
             public static final int canCoderID = 2;
             public static final Rotation2d angleOffset = Rotation2d.fromDegrees(151.95);
             public static final SwerveModuleConstants constants = 
@@ -145,22 +145,22 @@ public final class Constants {
 
     public static final class Shooter{
         // IDs for the 5 shooter motors
-        public static final int frontRightMotorID = 0;
-        public static final int frontLeftMotorID = 0;
-        public static final int backRightMotorID = 0;
-        public static final int backLeftMotorID = 0;
+        public static final int frontRightMotorID = 16;
+        public static final int frontLeftMotorID = 14;
+        public static final int backRightMotorID = 17;
+        public static final int backLeftMotorID = 15;
 
-        public static final int leftArticulatorID = 0;
-        public static final int rightArticulatorID = 0;
+        public static final int leftArticulatorID = 19;
+        public static final int rightArticulatorID = 20;
 
-        public static final int feedID = 0;
+        public static final int feedID = 13;
     }
 
     public static final class Intake{
         // IDs for the intake motors
-        public static final int frontIntakeID = 0;
-        public static final int backIntakeID = 0;
-        public static final int articulateIntakeID = 0;
+        public static final int leftIntakeID = 11;
+        public static final int rightIntakeID = 12;
+        public static final int articulateIntakeID = 13;
 
         // Gear ratio for the articulator
         public static final double articulateIntakeRatio = 4.0/1.0;
@@ -170,6 +170,11 @@ public final class Constants {
         public static final double articulatePI = 0.001;
         public static final double articulatePD = 0.001;
         public static final double articulatePF = 0.0;
+    }
+
+    public static final class Climber{
+        public static final int leftWinchID = 9;
+        public static final int rightWinchID = 10;
     }
 
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot

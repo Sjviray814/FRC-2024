@@ -13,15 +13,15 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
 
-  private CANSparkMax frontIntakeMotor, backIntakeMotor, intakeArticulatorMotor;
+  private CANSparkMax leftIntakeMotor, rightIntakeMotor, intakeArticulatorMotor;
   private IdleMode intakeIdleMode, intakeArticulatorIdleMode;
 
 
   /** Creates a new Intake. */
   public Intake() {
 
-    frontIntakeMotor = new CANSparkMax(Constants.Intake.frontIntakeID, MotorType.kBrushless);
-    backIntakeMotor = new CANSparkMax(Constants.Intake.backIntakeID, MotorType.kBrushless);
+    leftIntakeMotor = new CANSparkMax(Constants.Intake.leftIntakeID, MotorType.kBrushless);
+    rightIntakeMotor = new CANSparkMax(Constants.Intake.rightIntakeID, MotorType.kBrushless);
     intakeArticulatorMotor = new CANSparkMax(Constants.Intake.articulateIntakeID, MotorType.kBrushless);
 
     // Configure Idle Modes:
@@ -32,29 +32,31 @@ public class Intake extends SubsystemBase {
 
   public void configureMotors(){
     // Restore Factory Defaults:
-    frontIntakeMotor.restoreFactoryDefaults();
-    backIntakeMotor.restoreFactoryDefaults();
+    leftIntakeMotor.restoreFactoryDefaults();
+    rightIntakeMotor.restoreFactoryDefaults();
     intakeArticulatorMotor.restoreFactoryDefaults();
 
     // Set Idle Modes:
-    backIntakeMotor.setIdleMode(intakeIdleMode);
-    frontIntakeMotor.setIdleMode(intakeIdleMode);
+    rightIntakeMotor.setIdleMode(intakeIdleMode);
+    leftIntakeMotor.setIdleMode(intakeIdleMode);
     intakeArticulatorMotor.setIdleMode(intakeArticulatorIdleMode);
+
+    leftIntakeMotor.setInverted(true);
   }
 
   public void intakeOn(){
-    frontIntakeMotor.set(1);
-    backIntakeMotor.set(1);
+    leftIntakeMotor.set(1);
+    rightIntakeMotor.set(1);
   }
 
   public void intakeOff(){
-    frontIntakeMotor.set(0);
-    backIntakeMotor.set(0);
+    leftIntakeMotor.set(0);
+    rightIntakeMotor.set(0);
   }
 
   public void intakeReverse(){
-    frontIntakeMotor.set(-1);
-    backIntakeMotor.set(-1);
+    leftIntakeMotor.set(-1);
+    rightIntakeMotor.set(-1);
   }
 
   public void intakeUp(){
