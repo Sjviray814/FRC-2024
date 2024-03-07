@@ -20,6 +20,7 @@ public class DefaultShooter extends Command {
     this.shooter = shooter;
     this.shooterUp = shooterUp;
     this.shooterDown = shooterDown;
+    this.shooterOn = shooterOn;
     this.shooterFeed = shooterFeed;
 
     addRequirements(shooter);

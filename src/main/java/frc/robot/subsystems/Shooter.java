@@ -47,11 +47,6 @@ public class Shooter extends SubsystemBase {
 
     feedMotor.restoreFactoryDefaults();
 
-    // Set Inverted:
-    frontLeftMotor.setInverted(true);
-    backLeftMotor.setInverted(true);
-    leftArticulatorMotor.setInverted(true);
-
     // Set Idle Modes:
     frontRightMotor.setIdleMode(shooterIdleMode);
     frontLeftMotor.setIdleMode(shooterIdleMode);
@@ -65,8 +60,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public void shooterOn(){
-    frontLeftMotor.set(1);
-    frontRightMotor.set(1);
+    frontLeftMotor.set(-1);
+    frontRightMotor.set(-1);
     backLeftMotor.set(1);
     backRightMotor.set(1);
   }
@@ -75,20 +70,20 @@ public class Shooter extends SubsystemBase {
     frontRightMotor.set(0);
     frontLeftMotor.set(0);
     backRightMotor.set(0);
-    backRightMotor.set(0);
+    backLeftMotor.set(0);
 
     rightArticulatorMotor.set(0);
     leftArticulatorMotor.set(0);
   }
 
   public void articulateUp(){
-    rightArticulatorMotor.set(.1);
-    leftArticulatorMotor.set(.1);
+    rightArticulatorMotor.set(.5);
+    leftArticulatorMotor.set(-.5);
   }
 
   public void articulateDown(){
-    rightArticulatorMotor.set(-.1);
-    leftArticulatorMotor.set(-.1);
+    rightArticulatorMotor.set(-.5);
+    leftArticulatorMotor.set(.5);
   }
 
   public void articulateOff(){

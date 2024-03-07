@@ -6,6 +6,7 @@ package frc.robot.commands.defaultcommands;
 
 import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 
@@ -13,13 +14,15 @@ import frc.robot.subsystems.Intake;
 public class DefaultIntake extends Command {
   /** Creates a new DefaultIntake. */
   private Intake intake;
-  private BooleanSupplier intakeUp, intakeDown, intakeOn;
+  private BooleanSupplier intakeUp, intakeDown, intakeOn, safetyOff;
 
-  public DefaultIntake(BooleanSupplier intakeUp, BooleanSupplier intakeDown, BooleanSupplier intakeOn, Intake intake) {
+  public DefaultIntake(BooleanSupplier intakeUp, BooleanSupplier intakeDown, BooleanSupplier intakeOn, BooleanSupplier safetyOff, Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
     this.intakeUp = intakeUp;
     this.intakeDown = intakeDown;
+    this.intakeOn = intakeOn;
+    this.safetyOff = safetyOff;
 
     addRequirements(intake);
     
@@ -32,12 +35,17 @@ public class DefaultIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(intakeOn.getAsBoolean()){
+    if(intakeOn.getAsBoolean() && intake.getBeamBrake()){
+      intake.intakeOn();
+    }
+    else if (intakeOn.getAsBoolean() && !intake.getBeamBrake() && safetyOff.getAsBoolean()){
       intake.intakeOn();
     }
     else{
       intake.intakeStop();
     }
+
+
 
     if(intakeUp.getAsBoolean()){
       intake.intakeUp();

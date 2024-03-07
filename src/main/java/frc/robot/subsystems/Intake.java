@@ -8,6 +8,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -15,6 +17,7 @@ public class Intake extends SubsystemBase {
 
   private CANSparkMax leftIntakeMotor, rightIntakeMotor, intakeArticulatorMotor;
   private IdleMode intakeIdleMode, intakeArticulatorIdleMode;
+  private DigitalInput beamBrake;
 
 
   /** Creates a new Intake. */
@@ -23,6 +26,8 @@ public class Intake extends SubsystemBase {
     leftIntakeMotor = new CANSparkMax(Constants.Intake.leftIntakeID, MotorType.kBrushless);
     rightIntakeMotor = new CANSparkMax(Constants.Intake.rightIntakeID, MotorType.kBrushless);
     intakeArticulatorMotor = new CANSparkMax(Constants.Intake.articulateIntakeID, MotorType.kBrushless);
+
+    beamBrake = new DigitalInput(2);
 
     // Configure Idle Modes:
     intakeIdleMode = IdleMode.kBrake;
@@ -45,8 +50,12 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakeOn(){
-    leftIntakeMotor.set(1);
-    rightIntakeMotor.set(1);
+    leftIntakeMotor.set(-.25);
+    rightIntakeMotor.set(-.25);
+  }
+
+  public boolean getBeamBrake(){
+    return beamBrake.get();
   }
 
   public void intakeOff(){
@@ -54,8 +63,8 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakeReverse(){
-    leftIntakeMotor.set(-1);
-    rightIntakeMotor.set(-1);
+    leftIntakeMotor.set(1);
+    rightIntakeMotor.set(1);
   }
 
   public void intakeUp(){
@@ -74,5 +83,6 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("Beam Break", getBeamBrake());
   }
 }

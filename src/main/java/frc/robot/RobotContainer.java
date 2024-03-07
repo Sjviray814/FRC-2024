@@ -100,6 +100,7 @@ public class RobotContainer {
     private final JoystickButton intakeUp = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
     private final JoystickButton intakeDown = new JoystickButton(operator , XboxController.Button.kRightBumper.value);
     private final JoystickButton intakeOn = new JoystickButton(operator, XboxController.Button.kStart.value);
+    private final JoystickButton safetyOff = new JoystickButton(operator, XboxController.Button.kBack.value);
 
 
 
@@ -137,7 +138,7 @@ public class RobotContainer {
                 )
         );
 
-        intake.setDefaultCommand(new DefaultIntake(intakeUp, intakeDown, intakeOn, intake));
+        intake.setDefaultCommand(new DefaultIntake(() -> intakeUp.getAsBoolean(), () -> intakeDown.getAsBoolean(), () -> intakeOn.getAsBoolean(), ()-> shooterFeed.getAsBoolean(), intake));
 
         shooter.setDefaultCommand(new DefaultShooter(shooterUp, shooterDown, shooterOn, shooterFeed, shooter));
 
