@@ -37,6 +37,8 @@ import frc.robot.commands.autocommands.AutoTurn;
 import frc.robot.commands.autocommands.BalanceRobot;
 import frc.robot.commands.autocommands.LimelightAlign;
 import frc.robot.commands.autocommands.StrafeAlign;
+import frc.robot.commands.defaultcommands.DefaultIntake;
+import frc.robot.commands.defaultcommands.DefaultShooter;
 import frc.robot.commands.defaultcommands.DefaultSwerve;
 import frc.robot.subsystems.*;
 import frc.robot.util.Limelight;
@@ -135,6 +137,10 @@ public class RobotContainer {
                 )
         );
 
+        intake.setDefaultCommand(new DefaultIntake(intakeUp, intakeDown, intakeOn, intake));
+
+        shooter.setDefaultCommand(new DefaultShooter(shooterUp, shooterDown, shooterOn, shooterFeed, shooter));
+
         flipAxes.whileTrue(
             new DefaultSwerve(
                 swerve, 
@@ -173,14 +179,15 @@ public class RobotContainer {
         strafeAlign.whileTrue(new AlignToRing(swerve));
         // alignToScore.whileTrue(new LimelightAlign(jaw, neck, swerve, PoleHeight.HIGH_POLE));
 
-        shooterOn.whileTrue(new InstantCommand(() -> shooter.shooterOn()));
-        shooterUp.whileTrue(new InstantCommand(() -> shooter.articulateUp()));
-        shooterDown.whileTrue(new InstantCommand(() -> shooter.articulateDown()));
-        shooterFeed.whileTrue(new InstantCommand(() -> shooter.feed()));
+        // shooterOn.whileTrue(new InstantCommand(() -> shooter.shooterOn()));
+        // shooterUp.whileTrue(new InstantCommand(() -> shooter.articulateUp()));
+        // shooterDown.whileTrue(new InstantCommand(() -> shooter.articulateDown()));
+        // shooterFeed.whileTrue(new InstantCommand(() -> shooter.feed()));
+        // shooterStop.whileTrue(new InstantCommand(() -> shooter.shooterOff()));
 
-        intakeUp.whileTrue(new InstantCommand(() -> intake.intakeUp()));
-        intakeDown.whileTrue(new InstantCommand(() -> intake.intakeDown()));
-        intakeOn.whileTrue(new InstantCommand(() -> intake.intakeOn()));
+        // intakeUp.whileTrue(new InstantCommand(() -> intake.intakeUp()));
+        // intakeDown.whileTrue(new InstantCommand(() -> intake.intakeDown()));
+        // intakeOn.whileTrue(new InstantCommand(() -> intake.intakeOn()));
 
 
 

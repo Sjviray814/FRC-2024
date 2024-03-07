@@ -50,8 +50,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakeOff(){
-    leftIntakeMotor.set(0);
-    rightIntakeMotor.set(0);
+    intakeArticulatorMotor.set(0);
   }
 
   public void intakeReverse(){
@@ -65,7 +64,11 @@ public class Intake extends SubsystemBase {
   
   public void intakeDown(){
     intakeArticulatorMotor.set(-.1);
-    
+  }
+
+  public void intakeStop(){
+    leftIntakeMotor.set(0);
+    rightIntakeMotor.set(0);
   }
 
   @Override

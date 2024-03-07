@@ -76,6 +76,9 @@ public class Shooter extends SubsystemBase {
     frontLeftMotor.set(0);
     backRightMotor.set(0);
     backRightMotor.set(0);
+
+    rightArticulatorMotor.set(0);
+    leftArticulatorMotor.set(0);
   }
 
   public void articulateUp(){
@@ -95,6 +98,9 @@ public class Shooter extends SubsystemBase {
 
   public void feed(){
     feedMotor.set(1);
+  }
+  public void feedOff(){
+    feedMotor.set(0);
   }
 
   @Override
