@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.autos.DriveOut;
 import frc.robot.autos.pathweaverTest;
 import frc.robot.autos.testAuto;
 import frc.robot.commands.autocommands.AlignToRing;
@@ -95,12 +96,12 @@ public class RobotContainer {
 
     private final JoystickButton shooterOn = new JoystickButton(operator, XboxController.Button.kB.value);
     private final JoystickButton shooterUp = new JoystickButton(operator, XboxController.Button.kA.value);
-    private final JoystickButton shooterDown = new JoystickButton(operator, XboxController.Button.kX.value);
-    private final JoystickButton shooterFeed = new JoystickButton(operator, XboxController.Button.kY.value);
-    private final JoystickButton intakeUp = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
-    private final JoystickButton intakeDown = new JoystickButton(operator , XboxController.Button.kRightBumper.value);
+    private final JoystickButton shooterDown = new JoystickButton(operator, XboxController.Button.kY.value);
+    private final JoystickButton shooterFeed = new JoystickButton(operator, XboxController.Button.kX.value);
+    private final JoystickButton intakeUp = new JoystickButton(operator, XboxController.Button.kRightBumper.value);
+    private final JoystickButton intakeDown = new JoystickButton(operator , XboxController.Button.kLeftBumper.value);
     private final JoystickButton intakeOn = new JoystickButton(operator, XboxController.Button.kStart.value);
-    private final JoystickButton safetyOff = new JoystickButton(operator, XboxController.Button.kBack.value);
+    private final JoystickButton shooterSlow = new JoystickButton(operator, XboxController.Button.kBack.value);
 
 
 
@@ -140,7 +141,7 @@ public class RobotContainer {
 
         intake.setDefaultCommand(new DefaultIntake(() -> intakeUp.getAsBoolean(), () -> intakeDown.getAsBoolean(), () -> intakeOn.getAsBoolean(), ()-> shooterFeed.getAsBoolean(), intake));
 
-        shooter.setDefaultCommand(new DefaultShooter(shooterUp, shooterDown, shooterOn, shooterFeed, shooter));
+        shooter.setDefaultCommand(new DefaultShooter(shooterUp, shooterDown, shooterOn, shooterFeed, shooterSlow, intakeOn, shooter));
 
         flipAxes.whileTrue(
             new DefaultSwerve(
@@ -260,6 +261,7 @@ public class RobotContainer {
         chooser.setDefaultOption("Nothing", null);
         chooser.addOption("Test Auto", new testAuto(swerve));
         chooser.addOption("Pathweaver Test", new pathweaverTest(swerve));
+        chooser.addOption("Drive Out", new DriveOut(swerve));
 
         SmartDashboard.putData(chooser);
     }

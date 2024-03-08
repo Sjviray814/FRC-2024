@@ -40,7 +40,7 @@ public class LimelightAlign extends Command{
   @Override
   public void execute() {
     SmartDashboard.putNumber("Limelight X", Limelight.getTx());
-    rotation = -Limelight.getTx(); 
+    rotation = Limelight.getTx(); 
 
     // angleToPole = 0;
     // distanceToBase = 0;
@@ -84,10 +84,10 @@ public class LimelightAlign extends Command{
             swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.5);
         }
         else if(Math.abs(savedRotation) > 2){
-            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.1);
+            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.15);
         }
         else{
-            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.05);
+            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.07);
         }
         // swerve.driveSlow(new Translation2d(0,0), savedRotation, true, true, maxSpeed);
   

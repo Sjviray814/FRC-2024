@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -15,6 +16,7 @@ public class Shooter extends SubsystemBase {
 
   private CANSparkMax frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor, leftArticulatorMotor, rightArticulatorMotor, feedMotor;
   private IdleMode shooterIdleMode, articulatorIdleMode, feedIdleMode;
+  private DigitalInput shooterBeamBreak;
 
 
   /** Creates a new Shooter. */
@@ -32,6 +34,8 @@ public class Shooter extends SubsystemBase {
     shooterIdleMode = IdleMode.kCoast;
     articulatorIdleMode = IdleMode.kBrake;
     feedIdleMode = IdleMode.kCoast;
+
+    shooterBeamBreak = new DigitalInput(3);
 
   }
 
@@ -59,11 +63,21 @@ public class Shooter extends SubsystemBase {
     feedMotor.setIdleMode(feedIdleMode);
   }
 
+  public boolean getShooterBeamBreak(){
+    return shooterBeamBreak.get();
+  }
   public void shooterOn(){
     frontLeftMotor.set(-1);
-    frontRightMotor.set(-1);
-    backLeftMotor.set(1);
+    frontRightMotor.set(1);
+    backLeftMotor.set(-1);
     backRightMotor.set(1);
+  }
+
+  public void shooterSlow(){
+    frontLeftMotor.set(.1);
+    frontRightMotor.set(-.1);
+    backLeftMotor.set(.1);
+    backRightMotor.set(-.1);
   }
 
   public void shooterOff(){
@@ -92,7 +106,15 @@ public class Shooter extends SubsystemBase {
   }
 
   public void feed(){
-    feedMotor.set(1);
+    feedMotor.set(.2);
+  }
+
+  public void feedSlow(){
+    feedMotor.set(.1);
+  }
+
+  public void feedBack(){
+    feedMotor.set(-.05);
   }
   public void feedOff(){
     feedMotor.set(0);

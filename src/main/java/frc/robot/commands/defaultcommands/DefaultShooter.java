@@ -13,15 +13,17 @@ import frc.robot.subsystems.Shooter;
 public class DefaultShooter extends Command {
   /** Creates a new Defaultshooter. */
   private Shooter shooter;
-  private BooleanSupplier shooterUp, shooterDown, shooterOn, shooterFeed;
+  private BooleanSupplier shooterUp, shooterDown, shooterOn, shooterFeed, shooterSlow, positioningRing;
 
-  public DefaultShooter(BooleanSupplier shooterUp, BooleanSupplier shooterDown, BooleanSupplier shooterOn, BooleanSupplier shooterFeed, Shooter shooter) {
+  public DefaultShooter(BooleanSupplier shooterUp, BooleanSupplier shooterDown, BooleanSupplier shooterOn, BooleanSupplier shooterFeed, BooleanSupplier shooterSlow, BooleanSupplier positioningRing, Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
     this.shooterUp = shooterUp;
     this.shooterDown = shooterDown;
     this.shooterOn = shooterOn;
     this.shooterFeed = shooterFeed;
+    this.shooterSlow = shooterSlow;
+    this.positioningRing = positioningRing;
 
     addRequirements(shooter);
     
@@ -37,6 +39,9 @@ public class DefaultShooter extends Command {
     if(shooterOn.getAsBoolean()){
       shooter.shooterOn();
     }
+    else if(shooterSlow.getAsBoolean()){
+      shooter.shooterSlow();
+    }
     else{
       shooter.shooterOff();
     }
@@ -51,7 +56,15 @@ public class DefaultShooter extends Command {
       shooter.articulateOff();
     }
 
-    if(shooterFeed.getAsBoolean()){
+    if(shooterFeed.getAsBoolean() && positioningRing.getAsBoolean()){
+      if(shooter.getShooterBeamBreak()){
+        shooter.feedSlow();
+      }
+      else{
+        shooter.feedBack();
+      }
+    }
+    else if(shooterFeed.getAsBoolean()){
         shooter.feed();
     }
     else{
