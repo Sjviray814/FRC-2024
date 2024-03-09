@@ -74,10 +74,10 @@ public class Shooter extends SubsystemBase {
   }
 
   public void shooterSlow(){
-    frontLeftMotor.set(.1);
-    frontRightMotor.set(-.1);
-    backLeftMotor.set(.1);
-    backRightMotor.set(-.1);
+    frontLeftMotor.set(-.1);
+    frontRightMotor.set(.1);
+    backLeftMotor.set(-.1);
+    backRightMotor.set(.1);
   }
 
   public void shooterOff(){

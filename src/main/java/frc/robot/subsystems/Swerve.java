@@ -190,7 +190,7 @@ public class Swerve extends SubsystemBase {
     public void resetEverything(){
         zeroGyro();
         resetOdometry();
-        resetModulesToAbsolute();
+        // resetModulesToAbsolute();
     }
 
 
@@ -217,16 +217,10 @@ public class Swerve extends SubsystemBase {
         swerveOdometry.update(getYaw(), getModulePositions());  
 
         for(SwerveModule mod : mSwerveMods){
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle", mod.getState().angle.getDegrees());       
-            SmartDashboard.putNumber("Robot Distance Traveled", getPose().getX());
 
         }
 
-        SmartDashboard.putNumber("Gyro Roll", getRoll());
-
-        SmartDashboard.putNumber("Gyro Angle", getYaw().getDegrees());
     }
 }

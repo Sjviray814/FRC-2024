@@ -29,13 +29,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.autos.ShootDriveOut;
 import frc.robot.autos.StupidDriveOut;
 import frc.robot.autos.pathweaverTest;
 import frc.robot.autos.testAuto;
 import frc.robot.commands.autocommands.AlignToRing;
-import frc.robot.commands.autocommands.AutoDrive;
-import frc.robot.commands.autocommands.AutoTurn;
-import frc.robot.commands.autocommands.BalanceRobot;
 import frc.robot.commands.autocommands.LimelightAlign;
 import frc.robot.commands.autocommands.LimelightShooterAlign;
 import frc.robot.commands.autocommands.StrafeAlign;
@@ -270,6 +268,7 @@ public class RobotContainer {
         chooser.addOption("Test Auto", new testAuto(swerve));
         chooser.addOption("Pathweaver Test", new pathweaverTest(swerve));
         chooser.addOption("Drive Out", new StupidDriveOut(swerve));
+        chooser.addOption("Shoot Drive Out", new ShootDriveOut(swerve, shooter));
 
         SmartDashboard.putData(chooser);
     }

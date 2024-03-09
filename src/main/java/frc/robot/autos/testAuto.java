@@ -1,8 +1,6 @@
 package frc.robot.autos;
 
 import frc.robot.Constants;
-import frc.robot.commands.autocommands.AutoDrive;
-import frc.robot.commands.autocommands.AutoTurn;
 import frc.robot.subsystems.Swerve;
 
 import java.util.List;
