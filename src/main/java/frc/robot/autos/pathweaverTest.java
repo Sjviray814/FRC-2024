@@ -72,6 +72,7 @@ public class pathweaverTest extends SequentialCommandGroup {
 
         System.out.println(trajectory);
         addCommands(
+            new InstantCommand(() -> s_Swerve.resetModulesToAbsolute()),
             new InstantCommand(() -> s_Swerve.setOdometry(trajectory.getInitialPose())),
             swerveControllerCommand
         );

@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.autos.DriveOut;
+import frc.robot.autos.StupidDriveOut;
 import frc.robot.autos.pathweaverTest;
 import frc.robot.autos.testAuto;
 import frc.robot.commands.autocommands.AlignToRing;
@@ -37,7 +37,9 @@ import frc.robot.commands.autocommands.AutoDrive;
 import frc.robot.commands.autocommands.AutoTurn;
 import frc.robot.commands.autocommands.BalanceRobot;
 import frc.robot.commands.autocommands.LimelightAlign;
+import frc.robot.commands.autocommands.LimelightShooterAlign;
 import frc.robot.commands.autocommands.StrafeAlign;
+import frc.robot.commands.defaultcommands.DefaultClimber;
 import frc.robot.commands.defaultcommands.DefaultIntake;
 import frc.robot.commands.defaultcommands.DefaultShooter;
 import frc.robot.commands.defaultcommands.DefaultSwerve;
@@ -92,6 +94,8 @@ public class RobotContainer {
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kX.value);
     private final JoystickButton align = new JoystickButton(driver, XboxController.Button.kB.value);
     private final JoystickButton strafeAlign = new JoystickButton(driver, XboxController.Button.kStart.value);
+    private final JoystickButton climberUp = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+    private final JoystickButton climberDown = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     // private final JoystickButton changePressure = new JoystickButton(operator, XboxController.Button.kX.value);
 
     private final JoystickButton shooterOn = new JoystickButton(operator, XboxController.Button.kB.value);
@@ -109,6 +113,7 @@ public class RobotContainer {
     private final Swerve swerve = new Swerve();
     private final Shooter shooter = new Shooter();
     private final Intake intake = new Intake();
+    private final Climber climber = new Climber();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -138,6 +143,8 @@ public class RobotContainer {
                 () -> false
                 )
         );
+
+        climber.setDefaultCommand(new DefaultClimber(climberUp, climberDown, climber));
 
         intake.setDefaultCommand(new DefaultIntake(() -> intakeUp.getAsBoolean(), () -> intakeDown.getAsBoolean(), () -> intakeOn.getAsBoolean(), ()-> shooterFeed.getAsBoolean(), intake));
 
@@ -178,7 +185,8 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> swerve.resetEverything()));
         robotCentric.toggleOnTrue(new InstantCommand(() -> toggleRobotCentric()));
         align.whileTrue(new LimelightAlign(swerve));
-        strafeAlign.whileTrue(new AlignToRing(swerve));
+        // align.whileTrue(new LimelightShooterAlign(shooter));
+        // strafeAlign.whileTrue(new AlignToRing(swerve));
         // alignToScore.whileTrue(new LimelightAlign(jaw, neck, swerve, PoleHeight.HIGH_POLE));
 
         // shooterOn.whileTrue(new InstantCommand(() -> shooter.shooterOn()));
@@ -261,7 +269,7 @@ public class RobotContainer {
         chooser.setDefaultOption("Nothing", null);
         chooser.addOption("Test Auto", new testAuto(swerve));
         chooser.addOption("Pathweaver Test", new pathweaverTest(swerve));
-        chooser.addOption("Drive Out", new DriveOut(swerve));
+        chooser.addOption("Drive Out", new StupidDriveOut(swerve));
 
         SmartDashboard.putData(chooser);
     }

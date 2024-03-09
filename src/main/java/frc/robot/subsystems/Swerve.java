@@ -190,6 +190,7 @@ public class Swerve extends SubsystemBase {
     public void resetEverything(){
         zeroGyro();
         resetOdometry();
+        resetModulesToAbsolute();
     }
 
 

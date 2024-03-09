@@ -3,30 +3,31 @@ package frc.robot.commands.autocommands;
 import java.lang.invoke.ConstantCallSite;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.Limelight;
 import frc.robot.util.Limelight.LightMode;
 
 
-public class LimelightAlign extends Command{
-  private Swerve swerve;
+public class LimelightShooterAlign extends Command{
+  private Shooter shooter;
   private Timer timer;
-  private double angleToPole, distanceToBase, lengthToPole, distanceFromTarget, strafeOffset, rotation, savedRotation;
+  private double angle, savedAngle;
+  private int powerMultplier;
 
   
-  public LimelightAlign(Swerve swerve) {
+  public LimelightShooterAlign(Shooter shooter) {
     timer = new Timer();
-    this.swerve = swerve;
+    this.shooter = shooter;
     
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(swerve);
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.''
@@ -39,8 +40,8 @@ public class LimelightAlign extends Command{
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Limelight X", Limelight.getTx());
-    rotation = -Limelight.getTx(); 
+    SmartDashboard.putNumber("Limelight Y", Limelight.getTy());
+    angle = Limelight.getTy(); 
 
     // angleToPole = 0;
     // distanceToBase = 0;
@@ -60,36 +61,33 @@ public class LimelightAlign extends Command{
 
 
     // SmartDashboard.putNumber("distanceFromTarget", distanceFromTarget);
-    // SmartDashboard.putNumber("strafeOffset", strafeOffset);
-    SmartDashboard.putNumber("Rotation Offset", rotation);
 
     // PathPlannerTrajectory AlignToScore = PathPlanner.generatePath(
     //   new PathConstraints(4.0, 4.0),
-    //   new PathPoint(swerve.get, Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)), // position, heading(direction of travel), holonomic rotation
-    //   new PathPoint(new Translation2d(distanceFromTarget, strafeOffset), Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)) // position, heading(direction of travel), holonomic rotation
+    //   new PathPoint(swerve.get, angle2d.fromDegrees(0), angle2d.fromDegrees(0)), // position, heading(direction of travel), holonomic angle
+    //   new PathPoint(new Translation2d(distanceFromTarget, strafeOffset), angle2d.fromDegrees(0), angle2d.fromDegrees(0)) // position, heading(direction of travel), holonomic angle
     //   );
 
     // swerve.followTrajectoryCommand(AlignToScore);
     
     //   swerve.driveStraight(new Translation2d(distanceFromTarget, strafeOffset).times(2.0), 0, true, true);
-    // swerve.drive(new Translation2d(0, 0), (Rotation2d.fromRadians(rotation)).getRadians(), true, true);
-      if(rotation != 0){
-        savedRotation = rotation;
+    // swerve.drive(new Translation2d(0, 0), (angle2d.fromRadians(angle)).getRadians(), true, true);
+      if(angle != 0){
+        savedAngle = angle;
       }
 
-      double maxSpeed = Math.abs(savedRotation)/35.0 + 0.02;
-      if(maxSpeed > 0.7) maxSpeed = 0.7;
+      powerMultplier = savedAngle > 0 ? -1 : 1;
 
-        if(Math.abs(savedRotation) >= 12){
-            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.5);
+        if(Math.abs(savedAngle) >= 12){
+            shooter.articulateSlow(.7*powerMultplier);
         }
-        else if(Math.abs(savedRotation) > 2){
-            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.15);
+        else if(Math.abs(savedAngle) > 4){
+            shooter.articulateSlow(.3*powerMultplier);
         }
         else{
-            swerve.driveSlow(new Translation2d(0, 0), savedRotation, true, true, 0.07);
+            shooter.articulateSlow(.1*powerMultplier);
         }
-        // swerve.driveSlow(new Translation2d(0,0), savedRotation, true, true, maxSpeed);
+        // swerve.driveSlow(new Translation2d(0,0), savedangle, true, true, maxSpeed);
   
 
   }
@@ -99,18 +97,18 @@ public class LimelightAlign extends Command{
   public void end(boolean interrupted) {
     timer.stop();
     timer.reset();
-    swerve.drive(new Translation2d(), 0, true, true);
+    shooter.shooterOff();
   }
 
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((Limelight.getTx() != 0 && Math.abs(Limelight.getTx()) < 0.1) || timer.hasElapsed(3)){
+    if((Limelight.getTy() != 0 && Math.abs(Limelight.getTy()) < 0.1) || timer.hasElapsed(3)){
       return true;
     } else {
       return false;
     }
-    // // return (Math.abs(rotation - swerve.getPose().getRotation().getDegrees()) <= 5 || timer.hasElapsed(3));
+    // // return (Math.abs(angle - swerve.getPose().getangle().getDegrees()) <= 5 || timer.hasElapsed(3));
   }
 }

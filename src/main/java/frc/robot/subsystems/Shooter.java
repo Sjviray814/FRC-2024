@@ -100,6 +100,11 @@ public class Shooter extends SubsystemBase {
     leftArticulatorMotor.set(.5);
   }
 
+  public void articulateSlow(double speed){
+    rightArticulatorMotor.set(speed);
+    leftArticulatorMotor.set(-1*speed);
+  }
+
   public void articulateOff(){
     rightArticulatorMotor.set(0);
     leftArticulatorMotor.set(0);

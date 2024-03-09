@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   public static CTREConfigs ctreConfigs;
+  private UsbCamera camera;
 
   private Command m_autonomousCommand;
 
@@ -62,6 +63,8 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    CameraServer.startAutomaticCapture();
     // try {
     //   Path trajectoryPath1 = Filesystem.getDeployDirectory().toPath().resolve(trajectory1JSON);
     //   trajectory1 = TrajectoryUtil.fromPathweaverJson(trajectoryPath1);
