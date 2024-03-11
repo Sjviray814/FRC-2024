@@ -43,14 +43,22 @@ public class Climber extends SubsystemBase {
   }
 
   public void climberOn(){
-    leftClimberMotor.set(-.25);
-    rightClimberMotor.set(-.25);
+    leftClimberMotor.set(-.5);
+    rightClimberMotor.set(.5);
   }
+
+  public void leftClimberOn(){
+    leftClimberMotor.set(-.5);
+  }
+  public void rightClimberOn(){
+    rightClimberMotor.set(.5);
+  }
+  
 
 
   public void climberReverse(){
-    leftClimberMotor.set(.25);
-    rightClimberMotor.set(.25);
+    leftClimberMotor.set(.5);
+    rightClimberMotor.set(-.5);
   }
 
   public void climberStop(){

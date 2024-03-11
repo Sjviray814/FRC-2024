@@ -21,7 +21,7 @@ public class StupidDriveOut extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new TimedDriveOut(swerve, 2)
+      new TimedDriveOut(swerve, 1)
       );
   }
 }

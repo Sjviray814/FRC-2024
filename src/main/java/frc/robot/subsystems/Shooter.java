@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -35,7 +36,7 @@ public class Shooter extends SubsystemBase {
     articulatorIdleMode = IdleMode.kBrake;
     feedIdleMode = IdleMode.kCoast;
 
-    shooterBeamBreak = new DigitalInput(3);
+    shooterBeamBreak = new DigitalInput(2);
 
   }
 
@@ -74,10 +75,10 @@ public class Shooter extends SubsystemBase {
   }
 
   public void shooterSlow(){
-    frontLeftMotor.set(-.1);
-    frontRightMotor.set(.1);
-    backLeftMotor.set(-.1);
-    backRightMotor.set(.1);
+    frontLeftMotor.set(-.2);
+    frontRightMotor.set(.2);
+    backLeftMotor.set(-.2);
+    backRightMotor.set(.2);
   }
 
   public void shooterOff(){
@@ -91,13 +92,13 @@ public class Shooter extends SubsystemBase {
   }
 
   public void articulateUp(){
-    rightArticulatorMotor.set(.5);
-    leftArticulatorMotor.set(-.5);
+    rightArticulatorMotor.set(.69);
+    leftArticulatorMotor.set(-.69);
   }
 
   public void articulateDown(){
-    rightArticulatorMotor.set(-.5);
-    leftArticulatorMotor.set(.5);
+    rightArticulatorMotor.set(-.69);
+    leftArticulatorMotor.set(.69);
   }
 
   public void articulateSlow(double speed){
@@ -127,6 +128,7 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean("Beam Break 2", getShooterBeamBreak());
     // This method will be called once per scheduler run
   }
 }

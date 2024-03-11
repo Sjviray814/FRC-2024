@@ -94,6 +94,7 @@ public class RobotContainer {
     private final JoystickButton strafeAlign = new JoystickButton(driver, XboxController.Button.kStart.value);
     private final JoystickButton climberUp = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
     private final JoystickButton climberDown = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton bothUp = new JoystickButton(driver, XboxController.Button.kBack.value);
     // private final JoystickButton changePressure = new JoystickButton(operator, XboxController.Button.kX.value);
 
     private final JoystickButton shooterOn = new JoystickButton(operator, XboxController.Button.kB.value);
@@ -142,7 +143,7 @@ public class RobotContainer {
                 )
         );
 
-        climber.setDefaultCommand(new DefaultClimber(climberUp, climberDown, climber));
+        climber.setDefaultCommand(new DefaultClimber(climberUp, climberDown, strafeAlign, bothUp, climber));
 
         intake.setDefaultCommand(new DefaultIntake(() -> intakeUp.getAsBoolean(), () -> intakeDown.getAsBoolean(), () -> intakeOn.getAsBoolean(), ()-> shooterFeed.getAsBoolean(), intake));
 

@@ -27,7 +27,7 @@ public class Intake extends SubsystemBase {
     rightIntakeMotor = new CANSparkMax(Constants.Intake.rightIntakeID, MotorType.kBrushless);
     intakeArticulatorMotor = new CANSparkMax(Constants.Intake.articulateIntakeID, MotorType.kBrushless);
 
-    beamBrake = new DigitalInput(2);
+    beamBrake = new DigitalInput(3);
 
     // Configure Idle Modes:
     intakeIdleMode = IdleMode.kBrake;
@@ -63,8 +63,8 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakeReverse(){
-    leftIntakeMotor.set(1);
-    rightIntakeMotor.set(1);
+    leftIntakeMotor.set(.25);
+    rightIntakeMotor.set(.25);
   }
 
   public void intakeUp(){

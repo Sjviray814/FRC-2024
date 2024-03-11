@@ -35,10 +35,16 @@ public class DefaultIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(intakeOn.getAsBoolean() && intake.getBeamBrake()){
+    // else if (safetyOff.getAsBoolean()){
+    //   intake.intakeReverse();
+    // }
+    if (intakeOn.getAsBoolean() && !intake.getBeamBrake() && safetyOff.getAsBoolean()){
       intake.intakeOn();
     }
-    else if (intakeOn.getAsBoolean() && !intake.getBeamBrake() && safetyOff.getAsBoolean()){
+    //  if (intakeOn.getAsBoolean() && safetyOff.getAsBoolean()){
+    //   intake.intakeReverse();
+    // }
+    else if(intakeOn.getAsBoolean() && intake.getBeamBrake()){
       intake.intakeOn();
     }
     else{
@@ -46,8 +52,10 @@ public class DefaultIntake extends Command {
     }
 
 
-
-    if(intakeUp.getAsBoolean()){
+    if(intakeUp.getAsBoolean() && intakeDown.getAsBoolean()){
+      intake.intakeReverse();
+    }
+    else if(intakeUp.getAsBoolean()){
       intake.intakeUp();
     }
     else if(intakeDown.getAsBoolean()){

@@ -14,13 +14,15 @@ import frc.robot.subsystems.Climber;
 public class DefaultClimber extends Command {
   /** Creates a new DefaultClimber. */
   private Climber climber;
-  private BooleanSupplier climberUp, climberDown;
+  private BooleanSupplier climberUp, climberDown, bothReverse, bothOn;
 
-  public DefaultClimber(BooleanSupplier climberUp, BooleanSupplier climberDown,  Climber climber) {
+  public DefaultClimber(BooleanSupplier climberUp, BooleanSupplier climberDown, BooleanSupplier bothReverse, BooleanSupplier bothOn, Climber climber) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.climber = climber;
     this.climberUp = climberUp;
     this.climberDown = climberDown;
+    this.bothReverse = bothReverse;
+    this.bothOn = bothOn;
 
     addRequirements(climber);
     
@@ -33,10 +35,16 @@ public class DefaultClimber extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(climberUp.getAsBoolean()){
+    if(bothOn.getAsBoolean()){
       climber.climberOn();
     }
+    else if(climberUp.getAsBoolean()){
+      climber.leftClimberOn();
+    }
     else if (climberDown.getAsBoolean()){
+      climber.rightClimberOn();
+    }
+    else if(bothReverse.getAsBoolean()){
       climber.climberReverse();
     }
     else{

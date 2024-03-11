@@ -32,7 +32,7 @@ public class ShootDriveOut extends SequentialCommandGroup {
       new WaitCommand(1),
       new ShooterOff(shooter),
       new FeedOff(shooter),
-      new TimedDriveOut(swerve, 2)
+      new TimedDriveOut(swerve, 1)
       );
   }
 }
