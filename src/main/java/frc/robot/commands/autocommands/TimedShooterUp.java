@@ -4,37 +4,46 @@
 
 package frc.robot.commands.autocommands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
-public class IntakeDownLimited extends Command {
-  /** Creates a new IntakeDownLimited. */
-  private Intake intake;
-  public IntakeDownLimited(Intake intake) {
-    // Use addRequirements() here to declare subsystem dependencies.4
-    this.intake = intake;
-    addRequirements(intake);
+public class TimedShooterUp extends Command {
+  /** Creates a new TimedIntakeDown. */
+  private Shooter shooter;
+  private Timer timer;
+  private double seconds;
+  public TimedShooterUp(Shooter shooter, double seconds) {
+    this.shooter = shooter;
+    this.timer = new Timer();
+    this.seconds = seconds;
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    timer.reset();
+    timer.start();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.intakeDown();
+    shooter.articulateDown();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.intakeOff();
+    timer.stop();
+    timer.reset();
+    shooter.articulateOff();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !intake.getLowerLimit();
+    return timer.hasElapsed(seconds);
   }
 }

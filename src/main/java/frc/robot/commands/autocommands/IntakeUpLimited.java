@@ -7,10 +7,10 @@ package frc.robot.commands.autocommands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 
-public class IntakeDownLimited extends Command {
-  /** Creates a new IntakeDownLimited. */
+public class IntakeUpLimited extends Command {
+  /** Creates a new IntakeUpLimited. */
   private Intake intake;
-  public IntakeDownLimited(Intake intake) {
+  public IntakeUpLimited(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.4
     this.intake = intake;
     addRequirements(intake);
@@ -23,7 +23,7 @@ public class IntakeDownLimited extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.intakeDown();
+    intake.intakeUp();
   }
 
   // Called once the command ends or is interrupted.
@@ -35,6 +35,6 @@ public class IntakeDownLimited extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !intake.getLowerLimit();
+    return intake.getUpperLimit();
   }
 }

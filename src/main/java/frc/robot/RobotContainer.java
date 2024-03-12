@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -34,9 +35,12 @@ import frc.robot.autos.StupidDriveOut;
 import frc.robot.autos.pathweaverTest;
 import frc.robot.autos.testAuto;
 import frc.robot.commands.autocommands.AlignToRing;
+import frc.robot.commands.autocommands.FullTransport;
 import frc.robot.commands.autocommands.IntakeToAngle;
+import frc.robot.commands.autocommands.IntakeUpLimited;
 import frc.robot.commands.autocommands.LimelightAlign;
 import frc.robot.commands.autocommands.LimelightShooterAlign;
+import frc.robot.commands.autocommands.ShooterDownLimited;
 import frc.robot.commands.autocommands.StrafeAlign;
 import frc.robot.commands.defaultcommands.DefaultClimber;
 import frc.robot.commands.defaultcommands.DefaultIntake;
@@ -186,9 +190,9 @@ public class RobotContainer {
         robotCentric.toggleOnTrue(new InstantCommand(() -> toggleRobotCentric()));
         align.whileTrue(new LimelightAlign(swerve));
 
-        climberUp.onTrue(new IntakeToAngle(intake, 0));
-        climberDown.onTrue(new IntakeToAngle(intake, Constants.Intake.bottomIntakePosition));
-        strafeAlign.onTrue(new InstantCommand(() -> intake.resetIntakeEncoders()));
+        climberUp.onTrue(new ShooterDownLimited(shooter));
+        climberDown.onTrue(new ParallelRaceGroup(new IntakeUpLimited(intake), new WaitCommand(2.5)));
+        strafeAlign.onTrue(new ParallelRaceGroup(new FullTransport(intake, shooter), new WaitCommand(4)));
 
         
         // align.whileTrue(new LimelightShooterAlign(shooter));

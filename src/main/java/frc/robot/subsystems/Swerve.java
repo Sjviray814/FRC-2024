@@ -212,6 +212,10 @@ public class Swerve extends SubsystemBase {
         }
     }
 
+    public double getDistanceSensor(){
+        return 0;
+    }
+
     @Override
     public void periodic(){
         swerveOdometry.update(getYaw(), getModulePositions());  

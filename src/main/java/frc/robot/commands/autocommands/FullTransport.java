@@ -29,10 +29,12 @@ public class FullTransport extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new InstantCommand(() -> intake.intakePIDUp()),
+      new ShooterDownLimited(shooter),
+      new IntakeUpLimited(intake),
       new FirstHalfFeed(intake, shooter),
       new IntakeOff(intake),
-      new ParallelDeadlineGroup(new IntakeToAngle(intake, 0), new OscillateFeeder(shooter))
+      new ParallelDeadlineGroup(new TimedIntakeDown(intake, 0.3), new OscillateFeeder(shooter)),
+      new TimedShooterUp(shooter, 0.8)
       );
   }
 }
