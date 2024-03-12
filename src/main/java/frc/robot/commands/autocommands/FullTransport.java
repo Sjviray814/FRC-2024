@@ -13,7 +13,8 @@ import frc.robot.commands.autocommands.FeedOn;
 import frc.robot.commands.autocommands.ShooterOff;
 import frc.robot.commands.autocommands.ShooterOn;
 import frc.robot.commands.autocommands.TimedDriveOut;
-import frc.robot.commands.autocommands.FeedToShooter;
+import frc.robot.commands.autocommands.FirstHalfFeed;
+import frc.robot.commands.autocommands.SecondHalfFeed;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 
@@ -28,7 +29,8 @@ public class FullTransport extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> intake.intakePIDUp()),
-      new FeedToShooter(intake, shooter)
+      new FirstHalfFeed(intake, shooter),
+      new SecondHalfFeed(intake, shooter)
       );
   }
 }
