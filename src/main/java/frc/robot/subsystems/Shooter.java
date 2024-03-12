@@ -17,7 +17,7 @@ public class Shooter extends SubsystemBase {
 
   private CANSparkMax frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor, leftArticulatorMotor, rightArticulatorMotor, feedMotor;
   private IdleMode shooterIdleMode, articulatorIdleMode, feedIdleMode;
-  private DigitalInput shooterBeamBreak;
+  private DigitalInput shooterBeamBreak, limitSwitch;
 
 
   /** Creates a new Shooter. */
@@ -37,6 +37,7 @@ public class Shooter extends SubsystemBase {
     feedIdleMode = IdleMode.kCoast;
 
     shooterBeamBreak = new DigitalInput(2);
+    limitSwitch = new DigitalInput(6);
 
   }
 
@@ -126,9 +127,14 @@ public class Shooter extends SubsystemBase {
     feedMotor.set(0);
   }
 
+  public boolean getLimitSwitch(){
+    return limitSwitch.get();
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Beam Break 2", getShooterBeamBreak());
+    SmartDashboard.putBoolean("ShooterLimitSwitch", getLimitSwitch());
     // This method will be called once per scheduler run
   }
 }

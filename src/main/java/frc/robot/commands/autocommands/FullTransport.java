@@ -6,6 +6,7 @@ package frc.robot.commands.autocommands;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.autocommands.FeedOff;
@@ -14,7 +15,7 @@ import frc.robot.commands.autocommands.IntakeOff;
 import frc.robot.commands.autocommands.ShooterOn;
 import frc.robot.commands.autocommands.TimedDriveOut;
 import frc.robot.commands.autocommands.FirstHalfFeed;
-import frc.robot.commands.autocommands.SecondHalfFeed;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 
@@ -24,14 +25,14 @@ import frc.robot.subsystems.Swerve;
 public class FullTransport extends SequentialCommandGroup {
 
   /** Creates a new StupidDriveOut. */
-  public ShootDriveOut(Intake intake, Shooter shooter) {
+  public FullTransport(Intake intake, Shooter shooter) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> intake.intakePIDUp()),
       new FirstHalfFeed(intake, shooter),
       new IntakeOff(intake),
-      new SecondHalfFeed(intake, shooter)
+      new ParallelDeadlineGroup(new IntakeToAngle(intake, 0), new OscillateFeeder(shooter))
       );
   }
 }

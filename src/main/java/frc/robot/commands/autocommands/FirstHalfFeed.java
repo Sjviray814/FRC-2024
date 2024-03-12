@@ -14,7 +14,7 @@ import frc.robot.commands.autocommands.ShooterOff;
 import frc.robot.commands.autocommands.ShooterOn;
 import frc.robot.commands.autocommands.TimedDriveOut;
 import frc.robot.commands.autocommands.FirstHalfFeed;
-import frc.robot.commands.autocommands.SecondHalfFeed;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 

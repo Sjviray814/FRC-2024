@@ -13,7 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants;
 import frc.robot.SwerveModule;
@@ -21,13 +21,13 @@ import frc.robot.subsystems.*;
 
 
 
-public class IntakeToAngle extends CommandBase {
+public class IntakeToAngle extends Command {
   /** Creates a new NeckToLength Command */
 
-  private Intake intake
+  private Intake intake;
   private double angle;
 
-  public NeckToLength(Intake intake, double angle) {
+  public IntakeToAngle(Intake intake, double angle) {
     this.intake = intake;
     this.angle = angle;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -56,7 +56,7 @@ public class IntakeToAngle extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(angle - intake.getIntakeEncoder()) <= 2);    
+    return (Math.abs(angle - intake.getIntakeEncoder()) <= .1);    
 
     //4 is the radius of the interior of the cone
     //4 is a buffer zone for the robot -> 2 inches before, 2 inches past = 4 total inches

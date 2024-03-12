@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -12,17 +14,19 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import com.revrobotics.CANSparkBase.ControlType;
 
 public class Intake extends SubsystemBase {
 
   private CANSparkMax leftIntakeMotor, rightIntakeMotor, intakeArticulatorMotor;
   private IdleMode intakeIdleMode, intakeArticulatorIdleMode;
-  private DigitalInput beamBrake;
+  private DigitalInput beamBrake, topLimitSwitch, bottomLimitSwitch;
   private RelativeEncoder intakeEncoder;
   private SparkPIDController intakePIDController;
+  
 
-  private final double upPosition = 0;
-  private final double downPosition = 0;
+  private final double upPosition = Constants.Intake.topIntakePosition;
+  private final double downPosition = Constants.Intake.bottomIntakePosition;
 
 
   /** Creates a new Intake. */
@@ -33,6 +37,8 @@ public class Intake extends SubsystemBase {
     intakeArticulatorMotor = new CANSparkMax(Constants.Intake.articulateIntakeID, MotorType.kBrushless);
 
     beamBrake = new DigitalInput(3);
+    topLimitSwitch = new DigitalInput(4);
+    bottomLimitSwitch = new DigitalInput(5);
 
     // Configure Idle Modes:
     intakeIdleMode = IdleMode.kBrake;
@@ -61,10 +67,10 @@ public class Intake extends SubsystemBase {
     intakeEncoder = intakeArticulatorMotor.getEncoder();
     intakePIDController = intakeArticulatorMotor.getPIDController();
 
-    intakePIDController.setP(Constants.Intake.intakePP, Constants.Intake.intakeSlot);
-    intakePIDController.setI(Constants.Intake.intakePI, Constants.Intake.intakeSlot);
-    intakePIDController.setD(Constants.Intake.intakePD, Constants.Intake.intakeSlot);
-    intakePIDController.setFF(Constants.Intake.intakePF, Constants.Intake.intakeSlot);
+    intakePIDController.setP(Constants.Intake.articulatePP, Constants.Intake.intakeSlot);
+    intakePIDController.setI(Constants.Intake.articulatePI, Constants.Intake.intakeSlot);
+    intakePIDController.setD(Constants.Intake.articulatePD, Constants.Intake.intakeSlot);
+    intakePIDController.setFF(Constants.Intake.articulatePF, Constants.Intake.intakeSlot);
 
     intakeArticulatorMotor.burnFlash();
   }
@@ -78,7 +84,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void setIntakePosition(double position){
-    intakePIDController.setReference(position, ControlType.kPosition, 0);
+    intakePIDController.setReference(position, ControlType.kPosition, Constants.Intake.intakeSlot);
   }
 
   public void intakeOn(){
@@ -120,10 +126,20 @@ public class Intake extends SubsystemBase {
     setIntakePosition(downPosition);
   }
 
+  public boolean getUpperLimit(){
+    return topLimitSwitch.get();
+  }
+
+  public boolean getLowerLimit(){
+    return bottomLimitSwitch.get();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("Beam Break", getBeamBrake());
-    SmartDashboard.putNumber("intakePosition", getIntakeEncoder());
+    SmartDashboard.putBoolean("Upper Limit Switch", getUpperLimit());
+    SmartDashboard.putBoolean("Lower Limit Switch", getLowerLimit());
+    // SmartDashboard.putNumber("intakePosition", getIntakeEncoder());
   }
 }

@@ -34,6 +34,7 @@ import frc.robot.autos.StupidDriveOut;
 import frc.robot.autos.pathweaverTest;
 import frc.robot.autos.testAuto;
 import frc.robot.commands.autocommands.AlignToRing;
+import frc.robot.commands.autocommands.IntakeToAngle;
 import frc.robot.commands.autocommands.LimelightAlign;
 import frc.robot.commands.autocommands.LimelightShooterAlign;
 import frc.robot.commands.autocommands.StrafeAlign;
@@ -143,7 +144,7 @@ public class RobotContainer {
                 )
         );
 
-        climber.setDefaultCommand(new DefaultClimber(climberUp, climberDown, strafeAlign, bothUp, climber));
+        // climber.setDefaultCommand(new DefaultClimber(climberUp, climberDown, strafeAlign, bothUp, climber));
 
         intake.setDefaultCommand(new DefaultIntake(() -> intakeUp.getAsBoolean(), () -> intakeDown.getAsBoolean(), () -> intakeOn.getAsBoolean(), ()-> shooterFeed.getAsBoolean(), intake));
 
@@ -184,6 +185,12 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> swerve.resetEverything()));
         robotCentric.toggleOnTrue(new InstantCommand(() -> toggleRobotCentric()));
         align.whileTrue(new LimelightAlign(swerve));
+
+        climberUp.onTrue(new IntakeToAngle(intake, 0));
+        climberDown.onTrue(new IntakeToAngle(intake, Constants.Intake.bottomIntakePosition));
+        strafeAlign.onTrue(new InstantCommand(() -> intake.resetIntakeEncoders()));
+
+        
         // align.whileTrue(new LimelightShooterAlign(shooter));
         // strafeAlign.whileTrue(new AlignToRing(swerve));
         // alignToScore.whileTrue(new LimelightAlign(jaw, neck, swerve, PoleHeight.HIGH_POLE));
