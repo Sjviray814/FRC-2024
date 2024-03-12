@@ -29,7 +29,7 @@ public class FirstHalfFeed extends ParallelDeadlineGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         new RunFeederTillFed(shooter),
-        new IntakeOn()
+        new IntakeOn(intake)
       );
   }
 }
