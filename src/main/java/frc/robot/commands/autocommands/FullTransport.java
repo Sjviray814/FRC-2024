@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.autocommands.FeedOff;
 import frc.robot.commands.autocommands.FeedOn;
-import frc.robot.commands.autocommands.ShooterOff;
+import frc.robot.commands.autocommands.IntakeOff;
 import frc.robot.commands.autocommands.ShooterOn;
 import frc.robot.commands.autocommands.TimedDriveOut;
 import frc.robot.commands.autocommands.FirstHalfFeed;
@@ -30,6 +30,7 @@ public class FullTransport extends SequentialCommandGroup {
     addCommands(
       new InstantCommand(() -> intake.intakePIDUp()),
       new FirstHalfFeed(intake, shooter),
+      new IntakeOff(intake),
       new SecondHalfFeed(intake, shooter)
       );
   }
