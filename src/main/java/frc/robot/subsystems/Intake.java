@@ -18,6 +18,11 @@ public class Intake extends SubsystemBase {
   private CANSparkMax leftIntakeMotor, rightIntakeMotor, intakeArticulatorMotor;
   private IdleMode intakeIdleMode, intakeArticulatorIdleMode;
   private DigitalInput beamBrake;
+  private RelativeEncoder intakeEncoder;
+  private SparkPIDController intakePIDController;
+
+  private final double upPosition = 0;
+  private final double downPosition = 0;
 
 
   /** Creates a new Intake. */
@@ -33,6 +38,9 @@ public class Intake extends SubsystemBase {
     intakeIdleMode = IdleMode.kBrake;
     intakeArticulatorIdleMode = IdleMode.kBrake;
 
+    // Get encoders:
+    initPID();
+
   }
 
   public void configureMotors(){
@@ -47,6 +55,30 @@ public class Intake extends SubsystemBase {
     intakeArticulatorMotor.setIdleMode(intakeArticulatorIdleMode);
 
     leftIntakeMotor.setInverted(true);
+  }
+
+  public void initPID(){
+    intakeEncoder = intakeArticulatorMotor.getEncoder();
+    intakePIDController = intakeArticulatorMotor.getPIDController();
+
+    intakePIDController.setP(Constants.Intake.intakePP, Constants.Intake.intakeSlot);
+    intakePIDController.setI(Constants.Intake.intakePI, Constants.Intake.intakeSlot);
+    intakePIDController.setD(Constants.Intake.intakePD, Constants.Intake.intakeSlot);
+    intakePIDController.setFF(Constants.Intake.intakePF, Constants.Intake.intakeSlot);
+
+    intakeArticulatorMotor.burnFlash();
+  }
+
+  public void resetIntakeEncoders(){
+    intakeEncoder.setPosition(0);
+  }
+
+  public double getIntakeEncoder(){
+    return intakeEncoder.getPosition();
+  }
+
+  public void setIntakePosition(double position){
+    intakePIDController.setReference(position, ControlType.kPosition, 0);
   }
 
   public void intakeOn(){
@@ -80,9 +112,18 @@ public class Intake extends SubsystemBase {
     rightIntakeMotor.set(0);
   }
 
+  public void intakePIDUp(){
+    setIntakePosition(upPosition);
+  }
+
+  public void intakePIDDown(){
+    setIntakePosition(downPosition);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("Beam Break", getBeamBrake());
+    SmartDashboard.putNumber("intakePosition", getIntakeEncoder());
   }
 }
