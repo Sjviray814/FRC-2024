@@ -6,7 +6,7 @@ package frc.robot.commands.autocommands;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.autocommands.FeedOff;
 import frc.robot.commands.autocommands.FeedOn;
@@ -21,15 +21,15 @@ import frc.robot.subsystems.Swerve;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class FirstHalfFeed extends ParallelDeadlineGroup {
+public class FirstHalfFeed extends SequentialCommandGroup {
 
   /** Creates a new StupidDriveOut. */
   public FirstHalfFeed(Intake intake, Shooter shooter) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new RunFeederTillFed(shooter),
-        new IntakeOn(intake)
-      );
+        new IntakeOn(intake),
+        new RunFeederTillFed(shooter)
+    );
   }
 }
