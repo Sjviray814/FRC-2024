@@ -193,7 +193,7 @@ public final class Constants {
         public static final double kIYController = 0;
         public static final double kDYController = 0;
 
-        public static final double kPThetaController = 2.5;
+        public static final double kPThetaController = 0;
         public static final double kIThetaController = 0;
         public static final double kDThetaController = 0;
     

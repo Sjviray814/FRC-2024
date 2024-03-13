@@ -88,6 +88,13 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakeOn(){
+    if(getBeamBrake()){
+      leftIntakeMotor.set(-.25);
+      rightIntakeMotor.set(-.25);
+    }
+  }
+
+  public void intakeOnUnhindered(){
     leftIntakeMotor.set(-.25);
     rightIntakeMotor.set(-.25);
   }

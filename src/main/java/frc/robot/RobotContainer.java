@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.ShootDriveOut;
 import frc.robot.autos.StupidDriveOut;
+import frc.robot.autos.TwoPieceAuto;
 import frc.robot.autos.pathweaverTest;
 import frc.robot.autos.testAuto;
 import frc.robot.commands.autocommands.FullTransport;
@@ -132,15 +133,15 @@ public class RobotContainer {
 
         shooter.setDefaultCommand(new DefaultShooter(shooterUp, shooterDown, shooterOn, shooterFeed, shooterSlow, intakeOn, shooter));
 
-        flipAxes.whileTrue(
-            new DefaultSwerve(
-                swerve, 
-                () -> -driver.getRawAxis(translationAxis), 
-                () -> 0.0,//-driver.getRawAxis(strafeAxis), 
-                () -> getCameraRotation(), 
-                () -> true
-                )
-        );
+        // flipAxes.whileTrue(
+        //     new DefaultSwerve(
+        //         swerve, 
+        //         () -> -driver.getRawAxis(translationAxis), 
+        //         () -> 0.0,//-driver.getRawAxis(strafeAxis), 
+        //         () -> getCameraRotation(), 
+        //         () -> true
+        //         )
+        // );
      
     
         //Initalize Autonomous Chooser
@@ -259,6 +260,7 @@ public class RobotContainer {
         chooser.addOption("Pathweaver Test", new pathweaverTest(swerve));
         chooser.addOption("Drive Out", new StupidDriveOut(swerve));
         chooser.addOption("Shoot Drive Out", new ShootDriveOut(swerve, shooter));
+        chooser.addOption("Two Piece Auto", new TwoPieceAuto(swerve, intake, shooter));
 
         SmartDashboard.putData(chooser);
     }

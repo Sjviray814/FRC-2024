@@ -164,11 +164,13 @@ public Rotation2d getCanCoder(){
 
 public SwerveModulePosition getPosition(){
     for(int i = 0; i < 4; i++){
-        SmartDashboard.putNumber("Position of Encoder" + moduleNumber, Conversions.neoToMeters(mDriveEncoder.getPosition()*360, Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio, moduleNumber));
+        // Originally was mDriveEncoder.getPosition()*360
+        SmartDashboard.putNumber("Position of Encoder" + moduleNumber, Conversions.neoToMeters(mDriveEncoder.getPosition(), Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio, moduleNumber));
     }
 
     return new SwerveModulePosition(
-        Conversions.neoToMeters(mDriveEncoder.getPosition()*360, Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio, moduleNumber), 
+        // Originally was mDriveEncoder.getPosition()*360
+        Conversions.neoToMeters(mDriveEncoder.getPosition(), Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio, moduleNumber), 
         getAngle()
     );
 }

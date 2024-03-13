@@ -12,12 +12,14 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+// import com.revrobotics.Rev2mDistanceSensor.Port;
 
 public class Shooter extends SubsystemBase {
 
   private CANSparkMax frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor, leftArticulatorMotor, rightArticulatorMotor, feedMotor;
   private IdleMode shooterIdleMode, articulatorIdleMode, feedIdleMode;
   private DigitalInput shooterBeamBreak, limitSwitch;
+  // private Rev2mDistanceSensor articulatorDistance;
 
 
   /** Creates a new Shooter. */

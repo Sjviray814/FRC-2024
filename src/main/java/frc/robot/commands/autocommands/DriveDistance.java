@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 
 public class DriveDistance extends SequentialCommandGroup {
     public DriveDistance(Swerve s_Swerve, double distance){
+        distance = distance/.71; // Through experimentation we found that the robot only travels 71% of the desired distance
         TrajectoryConfig config =
             new TrajectoryConfig(
                     Constants.AutoConstants.kMaxSpeedMetersPerSecond,
