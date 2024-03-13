@@ -1,4 +1,4 @@
-package frc.robot.autos;
+package frc.robot.commands.autocommands;
 
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
@@ -18,8 +18,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 
 
-public class testAuto extends SequentialCommandGroup {
-    public testAuto(Swerve s_Swerve){
+public class PositionedDrive extends SequentialCommandGroup {
+    public PositionedDrive(Swerve s_Swerve, double x1, double y1, double rotation1, double x2, double y2, double rotation2){
         TrajectoryConfig config =
             new TrajectoryConfig(
                     Constants.AutoConstants.kMaxSpeedMetersPerSecond,
@@ -30,11 +30,11 @@ public class testAuto extends SequentialCommandGroup {
         Trajectory exampleTrajectory =
             TrajectoryGenerator.generateTrajectory(
                 // Start at the origin facing the +X direction
-                new Pose2d(0, 0, new Rotation2d(0)),
+                new Pose2d(x1, y1, new Rotation2d(rotation1)),
                 // Pass through these two interior waypoints, making an 's' curve path
-                List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+                List.of(new Translation2d((x1+x2)/2, (y1+y2)/2)),
                 // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(3, 0, new Rotation2d(Math.PI)),
+                new Pose2d(x2, y2, new Rotation2d(rotation2)),
                 config);
 
         var thetaController =

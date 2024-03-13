@@ -131,6 +131,10 @@ public class Shooter extends SubsystemBase {
     return limitSwitch.get();
   }
 
+  public double getDistanceSensor(){
+    return 0;
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Beam Break 2", getShooterBeamBreak());
