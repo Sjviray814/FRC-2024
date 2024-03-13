@@ -1,48 +1,26 @@
 package frc.robot;
 
-import java.util.function.BooleanSupplier;
-
-import javax.xml.crypto.dsig.spec.HMACParameterSpec;
-
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Axis;
-import edu.wpi.first.wpilibj.event.BooleanEvent;
 import edu.wpi.first.wpilibj.event.EventLoop;
-import edu.wpi.first.wpilibj.simulation.JoystickSim;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.RepeatCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.ShootDriveOut;
 import frc.robot.autos.StupidDriveOut;
 import frc.robot.autos.pathweaverTest;
 import frc.robot.autos.testAuto;
-import frc.robot.commands.autocommands.AlignToRing;
 import frc.robot.commands.autocommands.FullTransport;
-import frc.robot.commands.autocommands.IntakeToAngle;
 import frc.robot.commands.autocommands.IntakeUpLimited;
 import frc.robot.commands.autocommands.LimelightAlign;
-import frc.robot.commands.autocommands.LimelightShooterAlign;
 import frc.robot.commands.autocommands.ShooterDownLimited;
-import frc.robot.commands.autocommands.StrafeAlign;
-import frc.robot.commands.defaultcommands.DefaultClimber;
 import frc.robot.commands.defaultcommands.DefaultIntake;
 import frc.robot.commands.defaultcommands.DefaultShooter;
 import frc.robot.commands.defaultcommands.DefaultSwerve;

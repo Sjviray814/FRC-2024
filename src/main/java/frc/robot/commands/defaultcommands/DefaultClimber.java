@@ -6,7 +6,6 @@ package frc.robot.commands.defaultcommands;
 
 import java.util.function.BooleanSupplier;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
 
