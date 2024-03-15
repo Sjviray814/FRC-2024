@@ -18,6 +18,9 @@ public class Shooter extends SubsystemBase {
   private CANSparkMax frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor, leftArticulatorMotor, rightArticulatorMotor, feedMotor;
   private IdleMode shooterIdleMode, articulatorIdleMode, feedIdleMode;
   private DigitalInput shooterBeamBreak, limitSwitch;
+  private RelativeEncoder shooterEncoder;
+
+  private final double autoPosition = 0;
 
 
   /** Creates a new Shooter. */
@@ -38,6 +41,8 @@ public class Shooter extends SubsystemBase {
 
     shooterBeamBreak = new DigitalInput(2);
     limitSwitch = new DigitalInput(6);
+
+    shooterEncoder = leftArticulatorMotor.getEncoder();
 
   }
 
@@ -63,6 +68,10 @@ public class Shooter extends SubsystemBase {
     rightArticulatorMotor.setIdleMode(articulatorIdleMode);
 
     feedMotor.setIdleMode(feedIdleMode);
+  }
+
+  public double getShooterEncoder(){
+    return shooterEncoder.getPosition();
   }
 
   public boolean getShooterBeamBreak(){
