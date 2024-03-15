@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.autos.LeftTwoPieceAuto;
 import frc.robot.autos.ShootDriveOut;
 import frc.robot.autos.StupidDriveOut;
 import frc.robot.autos.TwoPieceAuto;
@@ -261,6 +262,7 @@ public class RobotContainer {
         chooser.addOption("Drive Out", new StupidDriveOut(swerve));
         chooser.addOption("Shoot Drive Out", new ShootDriveOut(swerve, shooter));
         chooser.addOption("Two Piece Auto", new TwoPieceAuto(swerve, intake, shooter));
+        chooser.addOption(("Left Two Piece Auto"), new LeftTwoPieceAuto(swerve, intake, shooter));
 
         SmartDashboard.putData(chooser);
     }

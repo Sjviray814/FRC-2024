@@ -32,9 +32,10 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 
-public class TwoPieceAuto extends SequentialCommandGroup {
-    public TwoPieceAuto(Swerve s_Swerve, Intake intake, Shooter shooter){
+public class LeftTwoPieceAuto extends SequentialCommandGroup {
+    public LeftTwoPieceAuto(Swerve s_Swerve, Intake intake, Shooter shooter){
         double distance = -1/.71; // Through experimentation we found that the robot only travels 71% of the desired distance
+        double sideDistance = 1.4/.71;
         TrajectoryConfig config =
             new TrajectoryConfig(
                     Constants.AutoConstants.kMaxSpeedMetersPerSecond,
@@ -43,28 +44,50 @@ public class TwoPieceAuto extends SequentialCommandGroup {
 
 
 
-        Trajectory forwardTrajectory =
-            TrajectoryGenerator.generateTrajectory(
-                // Start at the origin facing the +X direction
-                new Pose2d(0, 0, new Rotation2d(0)),
-                // Pass through these two interior waypoints, making an 's' curve path
-                List.of(new Translation2d(-1*distance/2, 0)),
-                // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(-1*distance, 0, new Rotation2d(0)),
-                config);
-          
-            config.setReversed(true);
+                Trajectory forwardTrajectory =
+                TrajectoryGenerator.generateTrajectory(
+                    // Start at the origin facing the +X direction
+                    new Pose2d(0, 0, new Rotation2d(0)),
+                    // Pass through these two interior waypoints, making an 's' curve path
+                    List.of(new Translation2d(-1*distance/2, 0)),
+                    // End 3 meters straight ahead of where we started, facing forward
+                    new Pose2d(-1*distance, 0, new Rotation2d(0)),
+                    config);
+              
+                config.setReversed(true);
+    
+            // An example trajectory to follow.  All units in meters.
+            Trajectory backTrajectory =
+                TrajectoryGenerator.generateTrajectory(
+                    // Start at the origin facing the +X direction
+                    new Pose2d(0, 0, new Rotation2d(0)),
+                    // Pass through these two interior waypoints, making an 's' curve path
+                    List.of(new Translation2d(distance/2, 0)),
+                    // End 3 meters straight ahead of where we started, facing forward
+                    new Pose2d(distance, 0, new Rotation2d(0)),
+                    config);
 
-        // An example trajectory to follow.  All units in meters.
-        Trajectory backTrajectory =
-            TrajectoryGenerator.generateTrajectory(
-                // Start at the origin facing the +X direction
-                new Pose2d(0, 0, new Rotation2d(0)),
-                // Pass through these two interior waypoints, making an 's' curve path
-                List.of(new Translation2d(distance/2, 0)),
-                // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(distance, 0, new Rotation2d(0)),
-                config);
+            Trajectory rightTrajectory =
+                TrajectoryGenerator.generateTrajectory(
+                    // Start at the origin facing the +X direction
+                    new Pose2d(0, 0, new Rotation2d(0)),
+                    // Pass through these two interior waypoints, making an 's' curve path
+                    List.of(new Translation2d(distance/3, sideDistance/2)),
+                    // End 3 meters straight ahead of where we started, facing forward
+                    new Pose2d(distance/3, sideDistance, new Rotation2d(0)),
+                    config);
+
+            Trajectory leftTrajectory =
+                TrajectoryGenerator.generateTrajectory(
+                    // Start at the origin facing the +X direction
+                    new Pose2d(0, 0, new Rotation2d(0)),
+                    // Pass through these two interior waypoints, making an 's' curve path
+                    List.of(new Translation2d(distance/3, -1*sideDistance/2)),
+                    // End 3 meters straight ahead of where we started, facing forward
+                    new Pose2d(distance/3, -1*sideDistance, new Rotation2d(0)),
+                    config);
+
+            
           
           
 
@@ -95,6 +118,28 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                 s_Swerve::setModuleStates,
                 s_Swerve);
 
+            SwerveControllerCommand goLeft =
+            new SwerveControllerCommand(
+                leftTrajectory,
+                s_Swerve::getPose,
+                Constants.Swerve.swerveKinematics,
+                new PIDController(Constants.AutoConstants.kPXController, Constants.AutoConstants.kIXController, Constants.AutoConstants.kDXController),
+                new PIDController(Constants.AutoConstants.kPYController, Constants.AutoConstants.kIYController, Constants.AutoConstants.kDYController),
+                thetaController,
+                s_Swerve::setModuleStates,
+                s_Swerve);
+
+            SwerveControllerCommand goRight =
+            new SwerveControllerCommand(
+                rightTrajectory,
+                s_Swerve::getPose,
+                Constants.Swerve.swerveKinematics,
+                new PIDController(Constants.AutoConstants.kPXController, Constants.AutoConstants.kIXController, Constants.AutoConstants.kDXController),
+                new PIDController(Constants.AutoConstants.kPYController, Constants.AutoConstants.kIYController, Constants.AutoConstants.kDYController),
+                thetaController,
+                s_Swerve::setModuleStates,
+                s_Swerve);
+
 
         addCommands(
             new ShooterOn(shooter),
@@ -103,11 +148,13 @@ public class TwoPieceAuto extends SequentialCommandGroup {
             new WaitCommand(1),
             new ShooterOff(shooter),
             new FeedOff(shooter),
+            goRight, 
             new TimedIntakeDown(intake, 0.7),
             new InstantCommand(() -> s_Swerve.setOdometry(backTrajectory.getInitialPose())),
             new ParallelCommandGroup(new IntakeOn(intake), goBack),
             new InstantCommand(() -> s_Swerve.setOdometry(forwardTrajectory.getInitialPose())),
             new ParallelCommandGroup(goForward, new FullTransport(intake, shooter)),
+            goLeft,
             new ShooterOn(shooter),
             new WaitCommand(1),
             new FeedOn(shooter),

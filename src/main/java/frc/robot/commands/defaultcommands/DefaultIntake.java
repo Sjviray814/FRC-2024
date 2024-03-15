@@ -37,8 +37,8 @@ public class DefaultIntake extends Command {
     // else if (safetyOff.getAsBoolean()){
     //   intake.intakeReverse();
     // }
-    if (intakeOn.getAsBoolean() &&  safetyOff.getAsBoolean()){
-      intake.intakeOnUnhindered();
+    if (intakeOn.getAsBoolean() && !intake.getBeamBrake() && safetyOff.getAsBoolean()){
+      intake.intakeOn();
     }
     //  if (intakeOn.getAsBoolean() && safetyOff.getAsBoolean()){
     //   intake.intakeReverse();

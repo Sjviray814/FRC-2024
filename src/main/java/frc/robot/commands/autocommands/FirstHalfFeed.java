@@ -21,7 +21,7 @@ public class FirstHalfFeed extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new IntakeOn(intake),
+        new IntakeOnUnhindered(intake),
         new RunFeederTillFed(shooter)
     );
   }

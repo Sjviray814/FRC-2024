@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 
-public class IntakeOn extends Command {
+public class IntakeOnUnhindered extends Command {
   /** Creates a new TimedDriveOut. */
   private Intake intake;
   private Timer timer;
   
-  public IntakeOn(Intake intake) {
+  public IntakeOnUnhindered(Intake intake) {
     this.intake = intake;
     this.timer = new Timer();
 
@@ -32,25 +32,18 @@ public class IntakeOn extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(intake.getBeamBrake()){
-      intake.intakeOn();
-    }
-    else{
-      intake.intakeStop();
-    }
+    intake.intakeOn();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      intake.intakeStop();
-      timer.stop();
-      timer.reset();
+      intake.intakeOn();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (!intake.getBeamBrake() || timer.hasElapsed(5));
+    return true;
   }
 }
