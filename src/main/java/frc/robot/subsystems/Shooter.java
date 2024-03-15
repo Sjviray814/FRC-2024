@@ -12,14 +12,15 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-// import com.revrobotics.Rev2mDistanceSensor.Port;
 
 public class Shooter extends SubsystemBase {
 
   private CANSparkMax frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor, leftArticulatorMotor, rightArticulatorMotor, feedMotor;
   private IdleMode shooterIdleMode, articulatorIdleMode, feedIdleMode;
   private DigitalInput shooterBeamBreak, limitSwitch;
-  // private Rev2mDistanceSensor articulatorDistance;
+  private RelativeEncoder shooterEncoder;
+
+  private final double autoPosition = 0;
 
 
   /** Creates a new Shooter. */
@@ -40,6 +41,8 @@ public class Shooter extends SubsystemBase {
 
     shooterBeamBreak = new DigitalInput(2);
     limitSwitch = new DigitalInput(6);
+
+    shooterEncoder = leftArticulatorMotor.getEncoder();
 
   }
 
@@ -65,6 +68,14 @@ public class Shooter extends SubsystemBase {
     rightArticulatorMotor.setIdleMode(articulatorIdleMode);
 
     feedMotor.setIdleMode(feedIdleMode);
+  }
+
+  public double getShooterEncoder(){
+    return shooterEncoder.getPosition();
+  }
+
+  public void resetEncoders(){
+    shooterEncoder.setPosition(0);
   }
 
   public boolean getShooterBeamBreak(){
