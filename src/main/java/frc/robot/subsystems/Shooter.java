@@ -74,6 +74,10 @@ public class Shooter extends SubsystemBase {
     return shooterEncoder.getPosition();
   }
 
+  public void resetEncoders(){
+    shooterEncoder.setPosition(0);
+  }
+
   public boolean getShooterBeamBreak(){
     return shooterBeamBreak.get();
   }
