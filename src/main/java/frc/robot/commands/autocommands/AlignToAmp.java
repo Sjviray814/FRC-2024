@@ -13,14 +13,12 @@ import frc.robot.util.Limelight;
 public class AlignToAmp extends Command{
   private Swerve swerve;
   private Timer timer;
-  private Shooter shooter;
-  private double distanceSensed, desiredDistance, rotation, savedRotation, angle, savedAngle, powerMultplier;
+  private double desiredDistance, angle, rotation, savedRotation, savedAngle;
 
   
-  public AlignToAmp(Swerve swerve, Shooter shooter) {
+  public AlignToAmp(Swerve swerve) {
     timer = new Timer();
     this.swerve = swerve;
-    this.shooter = shooter;
     this.desiredDistance = 0;
     
     // Use addRequirements() here to declare subsystem dependencies.
@@ -38,9 +36,9 @@ public class AlignToAmp extends Command{
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Limelight X", Limelight.getTx());
+    Limelight.setPipeline(1);
+    SmartDashboard.putNumber("Limelight Y", Limelight.getTy());
     rotation = -Limelight.getTx(); 
-    distanceSensed = swerve.getDistanceSensor();
     angle = Limelight.getTy(); 
 
     // angleToPole = 0;
@@ -77,35 +75,32 @@ public class AlignToAmp extends Command{
       if(rotation != 0){
         savedRotation = rotation;
       }
+      if(angle != 0){
+        savedAngle = angle;
+      }
 
-      int forward = distanceSensed < desiredDistance ? -1 : 1;
       int translation = savedRotation < 0 ? -1 : 1;
-      double pythagoreanDistance = Math.sqrt(distanceSensed*distanceSensed + savedRotation*savedRotation);
+      int forwardBackward = savedAngle < 0 ? 1 : -1;
 
-        if(Math.abs(pythagoreanDistance) >= 144){
-            swerve.driveSlow(new Translation2d(forward, translation), 0, false, true, 0.7);
-        }
-        else if(Math.abs(pythagoreanDistance) >= 25){
-            swerve.driveSlow(new Translation2d(forward, translation), 0, false, true, 0.4);
-        }
-        else if(Math.abs(pythagoreanDistance) > 1){
-            swerve.driveSlow(new Translation2d(forward, translation), 0, false, true, 0.2);
-        }
+      
+      if(Math.abs(savedRotation) >= 12){
+        swerve.driveSlow(new Translation2d(0, translation), 0, false, true, .7);
+      }
+      else if(Math.abs(savedRotation) > 2){
+          swerve.driveSlow(new Translation2d(0, translation), 0, false, true, 0.2);
+      }
+      else if(Math.abs(savedRotation) > 1){
+          swerve.driveSlow(new Translation2d(0, translation), 0, false, true, 0.1);
+      }
         else{
-          if(angle != 0){
-            savedAngle = angle;
-          }
-    
-          powerMultplier = savedAngle > 0 ? -1 : 1;
-    
             if(Math.abs(savedAngle) >= 12){
-                shooter.articulateSlow(.7*powerMultplier);
+               swerve.driveSlow(new Translation2d(forwardBackward, 0), 0, false, true, .7);
             }
-            else if(Math.abs(savedAngle) > 4){
-                shooter.articulateSlow(.3*powerMultplier);
+            else if(Math.abs(savedAngle) > 2){
+              swerve.driveSlow(new Translation2d(forwardBackward, 0), 0, false, true, 0.2);
             }
-            else{
-                shooter.articulateSlow(.1*powerMultplier);
+            else if(Math.abs(savedAngle) > 1){
+              swerve.driveSlow(new Translation2d(forwardBackward, 0), 0, false, true, 0.1);
             }
         }
         // swerve.driveSlow(new Translation2d(0,0), savedRotation, true, true, maxSpeed);
@@ -119,8 +114,6 @@ public class AlignToAmp extends Command{
     timer.stop();
     timer.reset();
     swerve.drive(new Translation2d(), 0, true, true);
-    shooter.articulateOff();
-    Limelight.setPipeline(0);
   }
 
 
@@ -128,7 +121,7 @@ public class AlignToAmp extends Command{
   @Override
   public boolean isFinished() {
     
-    if(((Limelight.getTx() != 0 && Math.abs(Limelight.getTx()) < 0.1) && (Limelight.getTy() != 0 && Math.abs(Limelight.getTy()) < 0.1))|| timer.hasElapsed(3)){
+    if(((Limelight.getTx() != 0 && Math.abs(Limelight.getTx()) < 0.5) && (Limelight.getTy() != 0 && Math.abs(Limelight.getTy()) < 0.5))|| timer.hasElapsed(3)){
       return true;
     } else {
       return false;

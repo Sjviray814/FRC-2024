@@ -27,11 +27,13 @@ public class LimelightAlign extends Command{
   public void initialize() {
     timer.reset();
     timer.start();
+    Limelight.setPipeline(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    Limelight.setPipeline(0);
     SmartDashboard.putNumber("Limelight X", Limelight.getTx());
     rotation = -Limelight.getTx(); 
 

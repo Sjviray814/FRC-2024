@@ -23,13 +23,20 @@ public class ShooterDownLimited extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.articulateUp();
+    if(shooter.getShooterEncoder() < 50000){
+      shooter.articulateSlow(.2);
+    }
+    else{
+      shooter.articulateUp();
+    }
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     shooter.shooterOff();
+    shooter.resetEncoders();
   }
 
   // Returns true when the command should end.

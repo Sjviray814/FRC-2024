@@ -7,8 +7,10 @@ import frc.robot.commands.autocommands.FeedOn;
 import frc.robot.commands.autocommands.FullTransport;
 import frc.robot.commands.autocommands.IntakeOn;
 import frc.robot.commands.autocommands.IntakeUpLimited;
+import frc.robot.commands.autocommands.ShooterDownLimited;
 import frc.robot.commands.autocommands.ShooterOff;
 import frc.robot.commands.autocommands.ShooterOn;
+import frc.robot.commands.autocommands.ShooterToPosition;
 import frc.robot.commands.autocommands.TimedDistance;
 import frc.robot.commands.autocommands.TimedIntakeDown;
 import frc.robot.subsystems.Intake;
@@ -97,19 +99,21 @@ public class TwoPieceAuto extends SequentialCommandGroup {
 
 
         addCommands(
+            new FeedOff(shooter),
             new ShooterOn(shooter),
+            // new ShooterToPosition(shooter, Constants.Shooter.speakerPosition),
             new WaitCommand(1),
             new FeedOn(shooter),
             new WaitCommand(1),
             new ShooterOff(shooter),
             new FeedOff(shooter),
-            new TimedIntakeDown(intake, 0.7),
+            new ParallelCommandGroup(new TimedIntakeDown(intake, 0.7), new ShooterDownLimited(shooter)),
             new InstantCommand(() -> s_Swerve.setOdometry(backTrajectory.getInitialPose())),
             new ParallelCommandGroup(new IntakeOn(intake), goBack),
             new InstantCommand(() -> s_Swerve.setOdometry(forwardTrajectory.getInitialPose())),
             new ParallelCommandGroup(goForward, new FullTransport(intake, shooter)),
             new ShooterOn(shooter),
-            new WaitCommand(1),
+            new ShooterToPosition(shooter, Constants.Shooter.speakerPosition),
             new FeedOn(shooter),
             new WaitCommand(1),
             new ShooterOff(shooter),

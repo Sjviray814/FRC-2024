@@ -13,9 +13,9 @@ import frc.robot.subsystems.Shooter;
 public class DefaultShooter extends Command {
   /** Creates a new Defaultshooter. */
   private Shooter shooter;
-  private BooleanSupplier shooterUp, shooterDown, shooterOn, shooterFeed, shooterSlow, positioningRing;
+  private BooleanSupplier shooterUp, shooterDown, shooterOn, shooterFeed, shooterSlow, shooterTrap, positioningRing;
 
-  public DefaultShooter(BooleanSupplier shooterUp, BooleanSupplier shooterDown, BooleanSupplier shooterOn, BooleanSupplier shooterFeed, BooleanSupplier shooterSlow, BooleanSupplier positioningRing, Shooter shooter) {
+  public DefaultShooter(BooleanSupplier shooterUp, BooleanSupplier shooterDown, BooleanSupplier shooterOn, BooleanSupplier shooterFeed, BooleanSupplier shooterSlow, BooleanSupplier shooterTrap, BooleanSupplier positioningRing, Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
     this.shooterUp = shooterUp;
@@ -23,6 +23,7 @@ public class DefaultShooter extends Command {
     this.shooterOn = shooterOn;
     this.shooterFeed = shooterFeed;
     this.shooterSlow = shooterSlow;
+    this.shooterTrap = shooterTrap;
     this.positioningRing = positioningRing;
 
     addRequirements(shooter);
@@ -41,6 +42,9 @@ public class DefaultShooter extends Command {
     }
     else if(shooterSlow.getAsBoolean()){
       shooter.shooterSlow();
+    }
+    else if(shooterTrap.getAsBoolean()){
+      shooter.shooterTrap();
     }
     else{
       shooter.shooterOff();

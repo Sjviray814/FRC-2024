@@ -19,7 +19,7 @@ public class FullTransport extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      // new ShooterDownLimited(shooter),
+      new ShooterDownLimited(shooter),
       new IntakeUpLimited(intake),
       new FirstHalfFeed(intake, shooter),
       new IntakeOff(intake),

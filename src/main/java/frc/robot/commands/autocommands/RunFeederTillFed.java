@@ -45,6 +45,6 @@ public class RunFeederTillFed extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !shooter.getShooterBeamBreak() || timer.hasElapsed(3.5);
+    return !shooter.getShooterBeamBreak() || timer.hasElapsed(1.5);
   }
 }

@@ -7,13 +7,13 @@ package frc.robot.commands.autocommands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Shooter;
 
-public class ShooterToDistance extends Command {
+public class ShooterToPosition extends Command {
   private Shooter shooter;
-  private double desiredDistance, currentDistance;
+  private double desiredPosition, currentDistance;
   /** Creates a new ShooterToDistance. */
-  public ShooterToDistance(Shooter shooter, double desiredDistance) {
+  public ShooterToPosition(Shooter shooter, double desiredPosition) {
     this.shooter = shooter;
-    this.desiredDistance = desiredDistance;
+    this.desiredPosition = desiredPosition;
 
     addRequirements(shooter);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -26,22 +26,28 @@ public class ShooterToDistance extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      if(shooter.getDistanceSensor() < desiredDistance){
-        shooter.articulateUp();
+      double forward = shooter.getShooterEncoder() > desiredPosition ? .8 : -.8;
+      if(Math.abs(shooter.getShooterEncoder() - desiredPosition) > 80000){
+          shooter.articulateSlow(forward);
       }
-      else{
-        shooter.articulateDown();
+      else if(Math.abs(shooter.getShooterEncoder() - desiredPosition) > 20000){
+        shooter.articulateSlow(forward*.05);
+      }
+      else {
+        shooter.articulateSlow(forward*.025);
       }
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    shooter.articulateOff();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return shooter.getDistanceSensor() - desiredDistance < 1;
+    return Math.abs(shooter.getShooterEncoder() - desiredPosition)< 10000;
   }
 }

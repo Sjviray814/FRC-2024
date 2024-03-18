@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -95,6 +96,13 @@ public class Shooter extends SubsystemBase {
     backRightMotor.set(.2);
   }
 
+  public void shooterTrap(){
+    frontLeftMotor.set(-.65);
+    frontRightMotor.set(.65);
+    backLeftMotor.set(-.65);
+    backRightMotor.set(.65);
+  }
+
   public void shooterOff(){
     frontRightMotor.set(0);
     frontLeftMotor.set(0);
@@ -106,13 +114,13 @@ public class Shooter extends SubsystemBase {
   }
 
   public void articulateUp(){
-    rightArticulatorMotor.set(1);
-    leftArticulatorMotor.set(-1);
+    rightArticulatorMotor.set(.7);
+    leftArticulatorMotor.set(-.7);
   }
 
   public void articulateDown(){
-    rightArticulatorMotor.set(-1);
-    leftArticulatorMotor.set(1);
+    rightArticulatorMotor.set(-.7);
+    leftArticulatorMotor.set(.7);
   }
 
   public void articulateSlow(double speed){
@@ -152,6 +160,8 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putBoolean("Beam Break 2", getShooterBeamBreak());
     SmartDashboard.putBoolean("ShooterLimitSwitch", getLimitSwitch());
+    SmartDashboard.putNumber("Shooter encoder", getShooterEncoder());
+    // SmartDashboard.putNumber("Difference", Math.abs(getDistanceSensor() - Constants.Shooter.speakerPosition));
     // This method will be called once per scheduler run
   }
 }

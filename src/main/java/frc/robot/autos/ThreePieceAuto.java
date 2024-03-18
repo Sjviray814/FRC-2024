@@ -7,6 +7,7 @@ import frc.robot.commands.autocommands.FeedOn;
 import frc.robot.commands.autocommands.FullTransport;
 import frc.robot.commands.autocommands.IntakeOn;
 import frc.robot.commands.autocommands.IntakeUpLimited;
+import frc.robot.commands.autocommands.ShooterDownLimited;
 import frc.robot.commands.autocommands.ShooterOff;
 import frc.robot.commands.autocommands.ShooterOn;
 import frc.robot.commands.autocommands.ShooterToPosition;
@@ -33,8 +34,8 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 
-public class LeftTwoPieceAuto extends SequentialCommandGroup {
-    public LeftTwoPieceAuto(Swerve s_Swerve, Intake intake, Shooter shooter){
+public class ThreePieceAuto extends SequentialCommandGroup {
+    public ThreePieceAuto(Swerve s_Swerve, Intake intake, Shooter shooter){
         double distance = -1/.71; // Through experimentation we found that the robot only travels 71% of the desired distance
         double sideDistance = 1.4/.71;
         TrajectoryConfig config =
@@ -108,7 +109,29 @@ public class LeftTwoPieceAuto extends SequentialCommandGroup {
                 s_Swerve::setModuleStates,
                 s_Swerve);
 
+          SwerveControllerCommand goBack2 =
+            new SwerveControllerCommand(
+                backTrajectory,
+                s_Swerve::getPose,
+                Constants.Swerve.swerveKinematics,
+                new PIDController(Constants.AutoConstants.kPXController, Constants.AutoConstants.kIXController, Constants.AutoConstants.kDXController),
+                new PIDController(Constants.AutoConstants.kPYController, Constants.AutoConstants.kIYController, Constants.AutoConstants.kDYController),
+                thetaController,
+                s_Swerve::setModuleStates,
+                s_Swerve);
+
           SwerveControllerCommand goForward =
+            new SwerveControllerCommand(
+                forwardTrajectory,
+                s_Swerve::getPose,
+                Constants.Swerve.swerveKinematics,
+                new PIDController(Constants.AutoConstants.kPXController, Constants.AutoConstants.kIXController, Constants.AutoConstants.kDXController),
+                new PIDController(Constants.AutoConstants.kPYController, Constants.AutoConstants.kIYController, Constants.AutoConstants.kDYController),
+                thetaController,
+                s_Swerve::setModuleStates,
+                s_Swerve);
+
+            SwerveControllerCommand goForward2 =
             new SwerveControllerCommand(
                 forwardTrajectory,
                 s_Swerve::getPose,
@@ -149,17 +172,28 @@ public class LeftTwoPieceAuto extends SequentialCommandGroup {
             new WaitCommand(1),
             new ShooterOff(shooter),
             new FeedOff(shooter),
-            new InstantCommand(() -> s_Swerve.setOdometry(leftTrajectory.getInitialPose())),
-            goLeft, 
             new TimedIntakeDown(intake, 0.7),
             new InstantCommand(() -> s_Swerve.setOdometry(backTrajectory.getInitialPose())),
-            new ParallelCommandGroup(new IntakeOn(intake), goBack),
+            new ParallelCommandGroup(new IntakeOn(intake), goBack, new ShooterDownLimited(shooter)),
             new InstantCommand(() -> s_Swerve.setOdometry(forwardTrajectory.getInitialPose())),
             new ParallelCommandGroup(goForward, new FullTransport(intake, shooter)),
-            new InstantCommand(() -> s_Swerve.setOdometry(rightTrajectory.getInitialPose())),
-            goRight,
             new ShooterOn(shooter),
             new ShooterToPosition(shooter, Constants.Shooter.speakerPosition),
+            new FeedOn(shooter),
+            new WaitCommand(1),
+            new ShooterOff(shooter),
+            new FeedOff(shooter),
+            new InstantCommand(() -> s_Swerve.setOdometry(leftTrajectory.getInitialPose())),
+            goLeft, 
+            new TimedIntakeDown(intake, 0.3),
+            new InstantCommand(() -> s_Swerve.setOdometry(backTrajectory.getInitialPose())),
+            new ParallelCommandGroup(new IntakeOn(intake), goBack2, new ShooterDownLimited(shooter)),
+            new InstantCommand(() -> s_Swerve.setOdometry(forwardTrajectory.getInitialPose())),
+            new ParallelCommandGroup(goForward2, new FullTransport(intake, shooter)),
+            new InstantCommand(() -> s_Swerve.setOdometry(rightTrajectory.getInitialPose())),
+            new ShooterOn(shooter),
+            new ParallelCommandGroup(goRight, new ShooterToPosition(shooter, Constants.Shooter.speakerPosition)),
+            new WaitCommand(0.3),
             new FeedOn(shooter),
             new WaitCommand(1),
             new ShooterOff(shooter),

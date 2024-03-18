@@ -10,19 +10,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LeftTwoPieceAuto;
 import frc.robot.autos.ShootDriveOut;
 import frc.robot.autos.StupidDriveOut;
+import frc.robot.autos.ThreePieceAuto;
 import frc.robot.autos.TwoPieceAuto;
 import frc.robot.autos.pathweaverTest;
 import frc.robot.autos.testAuto;
+import frc.robot.commands.autocommands.AlignToAmp;
 import frc.robot.commands.autocommands.FullTransport;
 import frc.robot.commands.autocommands.IntakeUpLimited;
 import frc.robot.commands.autocommands.LimelightAlign;
+import frc.robot.commands.autocommands.LimelightShooterAlign;
 import frc.robot.commands.autocommands.ShooterDownLimited;
+import frc.robot.commands.autocommands.ShooterToPosition;
 import frc.robot.commands.defaultcommands.DefaultIntake;
 import frc.robot.commands.defaultcommands.DefaultShooter;
 import frc.robot.commands.defaultcommands.DefaultSwerve;
@@ -90,8 +96,7 @@ public class RobotContainer {
     private final JoystickButton intakeDown = new JoystickButton(operator , XboxController.Button.kLeftBumper.value);
     private final JoystickButton intakeOn = new JoystickButton(operator, XboxController.Button.kStart.value);
     private final JoystickButton shooterSlow = new JoystickButton(operator, XboxController.Button.kBack.value);
-
-
+    private final JoystickButton shooterTrap = new JoystickButton(operator, XboxController.Button.kLeftStick.value);
 
     /* Subsystems */
     private final Swerve swerve = new Swerve();
@@ -101,7 +106,7 @@ public class RobotContainer {
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
-    public RobotContainer() {
+    public RobotContainer() {        
         Limelight.setPipeline(0);
         Limelight.setLedMode(LightMode.eOff);
         Limelight.setCameraMode(CameraMode.eVision);
@@ -132,7 +137,7 @@ public class RobotContainer {
 
         intake.setDefaultCommand(new DefaultIntake(() -> intakeUp.getAsBoolean(), () -> intakeDown.getAsBoolean(), () -> intakeOn.getAsBoolean(), ()-> shooterFeed.getAsBoolean(), intake));
 
-        shooter.setDefaultCommand(new DefaultShooter(shooterUp, shooterDown, shooterOn, shooterFeed, shooterSlow, intakeOn, shooter));
+        shooter.setDefaultCommand(new DefaultShooter(shooterUp, shooterDown, shooterOn, shooterFeed, shooterSlow, shooterTrap, intakeOn, shooter));
 
         // flipAxes.whileTrue(
         //     new DefaultSwerve(
@@ -169,10 +174,13 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> swerve.resetEverything()));
         robotCentric.toggleOnTrue(new InstantCommand(() -> toggleRobotCentric()));
         align.whileTrue(new LimelightAlign(swerve));
+        align.whileTrue(new LimelightShooterAlign(shooter));
+        flipAxes.whileTrue(new ParallelCommandGroup(new ShooterToPosition(shooter, Constants.Shooter.ampPosition), new AlignToAmp(swerve)));
 
         climberUp.onTrue(new ShooterDownLimited(shooter));
         climberDown.onTrue(new ParallelRaceGroup(new IntakeUpLimited(intake), new WaitCommand(2.5)));
         strafeAlign.onTrue(new ParallelRaceGroup(new FullTransport(intake, shooter), new WaitCommand(4)));
+        bothUp.onTrue(new ShooterToPosition(shooter, Constants.Shooter.speakerPosition));
 
         
         // align.whileTrue(new LimelightShooterAlign(shooter));
@@ -263,6 +271,7 @@ public class RobotContainer {
         chooser.addOption("Shoot Drive Out", new ShootDriveOut(swerve, shooter));
         chooser.addOption("Two Piece Auto", new TwoPieceAuto(swerve, intake, shooter));
         chooser.addOption(("Left Two Piece Auto"), new LeftTwoPieceAuto(swerve, intake, shooter));
+        chooser.addOption("3 Piece Auto", new ThreePieceAuto(swerve, intake, shooter));
 
         SmartDashboard.putData(chooser);
     }

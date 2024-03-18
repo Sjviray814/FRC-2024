@@ -10,8 +10,7 @@ import frc.robot.util.Limelight;
 public class LimelightShooterAlign extends Command{
   private Shooter shooter;
   private Timer timer;
-  private double angle, savedAngle;
-  private int powerMultplier;
+  private double angle, savedAngle, powerMultplier;
 
   
   public LimelightShooterAlign(Shooter shooter) {
@@ -25,6 +24,7 @@ public class LimelightShooterAlign extends Command{
   // Called when the command is initially scheduled.''
   @Override
   public void initialize() {
+    Limelight.setPipeline(0);
     timer.reset();
     timer.start();
   }
@@ -32,6 +32,7 @@ public class LimelightShooterAlign extends Command{
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    Limelight.setPipeline(0);
     SmartDashboard.putNumber("Limelight Y", Limelight.getTy());
     angle = Limelight.getTy(); 
 
@@ -68,16 +69,16 @@ public class LimelightShooterAlign extends Command{
         savedAngle = angle;
       }
 
-      powerMultplier = savedAngle > 0 ? -1 : 1;
+      powerMultplier = savedAngle > 0 ? -.8 : .8;
 
         if(Math.abs(savedAngle) >= 12){
-            shooter.articulateSlow(.7*powerMultplier);
+            shooter.articulateSlow(.4*powerMultplier);
         }
         else if(Math.abs(savedAngle) > 4){
-            shooter.articulateSlow(.3*powerMultplier);
+            shooter.articulateSlow(.1*powerMultplier);
         }
         else{
-            shooter.articulateSlow(.1*powerMultplier);
+            shooter.articulateSlow(.05*powerMultplier);
         }
         // swerve.driveSlow(new Translation2d(0,0), savedangle, true, true, maxSpeed);
   
